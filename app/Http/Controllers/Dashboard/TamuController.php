@@ -15,9 +15,28 @@ class TamuController extends Controller
         return view('dashboard.dataTamu', compact('tamus'));
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        return response()->json(Tamu::all());
+        $query  = Tamu::orderBy('created_at', 'desc');
+        $search = $request->query('search', '');
+
+        if ($search !== '') {
+            $query->where('nama', 'like', "%{$search}%")
+                  ->orWhere('kategori', 'like', "%{$search}%")
+                  ->orWhere('status', 'like', "%{$search}%");
+        }
+
+        $total      = $query->count();
+        $limit      = (int) $request->query('limit', 10);
+        $page       = max(1, (int) $request->query('page', 1));
+        $totalPages = $limit > 0 ? (int) ceil($total / $limit) : 1;
+        $data       = $query->skip(($page - 1) * $limit)->take($limit)->get();
+
+        return response()->json([
+            'data'       => $data,
+            'total'      => $total,
+            'totalPages' => $totalPages,
+        ]);
     }
 
     public function store(Request $request)

@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-  const API      = 'api/tamu_api.php';
+  const API      = '/api/tamu';
   const PER_PAGE = 10;
   let currentPage = 1;
   let totalPages  = 1;
@@ -175,13 +175,13 @@ document.addEventListener('DOMContentLoaded', () => {
 
     if (!nama) { alert('Nama tamu wajib diisi!'); return; }
 
-    const url    = editingId ? `${API}?id=${editingId}` : API;
+    const url    = editingId ? `${API}/${editingId}` : API;
     const method = editingId ? 'PUT' : 'POST';
 
     try {
       const res  = await fetch(url, {
         method, credentials: 'same-origin',
-        headers: { 'Content-Type': 'application/json' },
+        headers: { 'Content-Type': 'application/json', 'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '' },
         body: JSON.stringify({ nama, kategori, pax, status, ucapan }),
       });
       const json = await res.json();
@@ -195,7 +195,8 @@ document.addEventListener('DOMContentLoaded', () => {
   window.deleteTamu = async function(id) {
     if (!confirm('Hapus tamu ini?')) return;
     try {
-      const res  = await fetch(`${API}?id=${id}`, { method: 'DELETE', credentials: 'same-origin' });
+      const csrfDel = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+      const res  = await fetch(`${API}/${id}`, { method: 'DELETE', credentials: 'same-origin', headers: { 'X-CSRF-TOKEN': csrfDel } });
       const json = await res.json();
       if (json.success) loadTamu();
       else alert(json.error ?? 'Gagal menghapus.');
