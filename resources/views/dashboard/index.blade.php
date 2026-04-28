@@ -1,28 +1,3 @@
-<?php
-// ============================================================
-//  dashboard/index.php — Dashboard utama
-//  Statistik diambil langsung dari database → sinkron dengan dataTamu
-// ============================================================
-require_once __DIR__ . '/auth_check.php';
-require_once __DIR__ . '/config/database.php';
-
-$pdo = getDB();
-
-// Ambil statistik dari tabel tamu
-$stats = $pdo->query("
-    SELECT
-        COUNT(*)                          AS total,
-        SUM(status = 'Hadir')             AS hadir,
-        SUM(status = 'Tidak Hadir')       AS tidak_hadir,
-        SUM(status = 'Menunggu')          AS menunggu
-    FROM tamu
-")->fetch();
-
-$total       = (int)($stats['total']       ?? 0);
-$hadir       = (int)($stats['hadir']       ?? 0);
-$tidakHadir  = (int)($stats['tidak_hadir'] ?? 0);
-$menunggu    = (int)($stats['menunggu']    ?? 0);
-?>
 <!DOCTYPE html>
 <html lang="id">
 <head>
@@ -30,9 +5,9 @@ $menunggu    = (int)($stats['menunggu']    ?? 0);
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <title>Nicholas & Nahda — Dashboard</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
-    <link rel="stylesheet" href="dashboard.css"/>
+    <link rel="stylesheet" href="{{ asset('css/dashboard.css')}}"/> 
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="dashboard.js" defer></script>
+    <script src="{{ asset('js/dashboard.js')}}" defer></script>
 </head>
 <body>
 
@@ -41,45 +16,7 @@ $menunggu    = (int)($stats['menunggu']    ?? 0);
 </button>
 <div class="overlay" id="overlay"></div>
 
-<aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">NICHOLAS<br>&amp;<br>NAHDA</div>
-  <nav class="sidebar-nav">
-    <a class="nav-item active" href="index.php">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/>
-        <rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/>
-      </svg>
-      Dashboard
-    </a>
-    <a class="nav-item" href="editLanding.php">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
-      </svg>
-      Edit Landing Page
-    </a>
-    <a class="nav-item" href="dataTamu.php">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/>
-        <circle cx="9" cy="7" r="4"/>
-        <path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/>
-      </svg>
-      Data Tamu
-    </a>
-    <a class="nav-item" href="dataAdmin.php">
-      <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-        <circle cx="12" cy="8" r="4"/>
-        <path d="M20 21a8 8 0 10-16 0"/>
-      </svg>
-      Data Admin
-    </a>
-  </nav>
-  <a href="logout.php" class="sidebar-logout">
-    <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-      <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4M16 17l5-5-5-5M21 12H9"/>
-    </svg>
-    Keluar
-  </a>
-</aside>
+@include('dashboard.partials.sidebar')
 
 <main class="main">
   <h1 class="page-title">Dashboard</h1>
@@ -154,11 +91,11 @@ $menunggu    = (int)($stats['menunggu']    ?? 0);
           <span>Konfirmasi Hadir</span>
         </div>
         <div class="legend-item">
-          <span class="legend-dot red" id="pctTidak">{{$total > 0 ? round($tidakHadir / $total * 100) : 0 ?>}}%</span>
+          <span class="legend-dot red" id="pctTidak">{{ $total > 0 ? round($tidakHadir / $total * 100) : 0 }}%</span>
           <span>Konfirmasi Tidak Hadir</span>
         </div>
         <div class="legend-item">
-          <span class="legend-dot orange" id="pctMenunggu">{{$total > 0 ? round($menunggu / $total * 100) : 0 ?}}</span>
+          <span class="legend-dot orange" id="pctMenunggu">{{ $total > 0 ? round($menunggu / $total * 100) : 0 }}%</span>
           <span>Menunggu Respon</span>
         </div>
       </div>

@@ -31,7 +31,13 @@ Route::post('/dashboard/login', [LoginController::class, 'adminLogin'])->name('d
 Route::prefix('dashboard')->middleware('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/data-tamu', [TamuController::class, 'page'])->name('dashboard.tamu');
+    
+    // Rute Data Admin CRUD
     Route::get('/data-admin', [AdminController::class, 'index'])->name('dashboard.admin');
+    Route::post('/data-admin', [AdminController::class, 'store'])->name('dashboard.admin.store');
+    Route::put('/data-admin/{id}', [AdminController::class, 'update'])->name('dashboard.admin.update');
+    Route::delete('/data-admin/{id}', [AdminController::class, 'destroy'])->name('dashboard.admin.destroy');
+    
     Route::get('/edit-landing', [LandingController::class, 'index'])->name('dashboard.landing');
 });
 

@@ -137,11 +137,19 @@ document.getElementById('rsvp-form').addEventListener('submit', async function(e
     formData.append('pax', pax); 
     formData.append('pesan', message);
 
+    // Cari bagian ini di utama.js
     try {
-        const response = await fetch('proses_rsvp.php', {
+        const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');
+
+        const response = await fetch('/proses-rsvp', { // Gunakan rute Laravel
             method: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken,
+                'Accept': 'application/json'
+            },
             body: formData
         });
+        
         const result = await response.json();
 
         if (result.status === 'success') {
@@ -160,10 +168,11 @@ document.getElementById('rsvp-form').addEventListener('submit', async function(e
             document.getElementById('category-val').value = '';
             document.getElementById('pax-val').value = '';
         } else {
-            status.textContent = result.message;
+            status.textContent = result.message || 'Gagal mengirim data.';
             status.className = 'text-center text-sm font-jost text-red-600 mt-4';
         }
     } catch (error) {
+        console.error(error);
         status.textContent = 'Terjadi kesalahan jaringan.';
         status.className = 'text-center text-sm font-jost text-red-600 mt-4';
     }

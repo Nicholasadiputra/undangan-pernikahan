@@ -3,47 +3,47 @@
 namespace App\Http\Controllers\Dashboard;
 
 use App\Http\Controllers\Controller;
+use App\Models\Tamu;
 use Illuminate\Http\Request;
 
 class TamuController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-// GET - list tamu dengan pagination
-    public function index(Request $request)
+    public function page()
     {
-        $query = Tamu::query();
-        if ($request->search) {
-            $query->where('nama', 'like', '%'.$request->search.'%');
-        }
-        $tamu = $query->orderBy('id', 'desc')->paginate($request->limit ?? 10);
-        $stats = Tamu::selectRaw('COUNT(*) as total, 
-            SUM(status="Hadir") as hadir,
-            SUM(status="Tidak Hadir") as tidak_hadir,
-            SUM(status="Menunggu") as menunggu')->first();
-
-        return response()->json(['data' => $tamu->items(), 'total' => $tamu->total(), 'stats' => $stats]);
+        // Mengambil data untuk dikirim ke view dashboard.dataTamu
+        $tamus = Tamu::orderBy('created_at', 'desc')->get();
+        return view('dashboard.dataTamu', compact('tamus'));
     }
 
-    // POST
+    public function index()
+    {
+        return response()->json(Tamu::all());
+    }
+
     public function store(Request $request)
     {
-        $tamu = Tamu::create($request->all());
-        return response()->json(['success' => true, 'id' => $tamu->id], 201);
+        $validated = $request->validate([
+            'nama'     => 'required|string|max:255',
+            'kategori' => 'required|in:Keluarga,Teman,Rekan',
+            'pax'      => 'required|integer|min:0',
+            'status'   => 'required|in:Hadir,Tidak Hadir,Menunggu',
+            'ucapan'   => 'nullable|string'
+        ]);
+
+        $tamu = Tamu::create($validated);
+        return response()->json($tamu);
     }
 
-    // PUT
     public function update(Request $request, $id)
     {
-        Tamu::findOrFail($id)->update($request->all());
-        return response()->json(['success' => true]);
+        $tamu = Tamu::findOrFail($id);
+        $tamu->update($request->all());
+        return response()->json($tamu);
     }
 
-    // DELETE
     public function destroy($id)
     {
-        Tamu::findOrFail($id)->delete();
+        Tamu::destroy($id);
         return response()->json(['success' => true]);
     }
 }
