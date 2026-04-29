@@ -1,4 +1,4 @@
- /* ── SIDEBAR TOGGLE ── */
+/* ── SIDEBAR TOGGLE ── */
   const sidebar  = document.getElementById('sidebar');
   const overlay  = document.getElementById('overlay');
   const hamburger= document.getElementById('hamburger');
@@ -15,10 +15,10 @@
     const ctx    = canvas.getContext('2d');
     const cx = canvas.width / 2, cy = canvas.height / 2, r = 55, lw = 22;
 
-    const total   = parseInt(document.getElementById('totalTamu').textContent) || 100;
-    const hadir   = parseInt(document.getElementById('konfHadir').textContent) || 83;
-    const tidak   = parseInt(document.getElementById('konfTidak').textContent) || 10;
-    const tunggu  = parseInt(document.getElementById('menunggu').textContent)  || 7;
+    const total   = parseInt(document.getElementById('totalTamu').textContent) || 0;
+    const hadir   = parseInt(document.getElementById('konfHadir').textContent) || 0;
+    const tidak   = parseInt(document.getElementById('konfTidak').textContent) || 0;
+    const tunggu  = parseInt(document.getElementById('menunggu').textContent)  || 0;
 
     const slices = [
       { val: hadir,  color: '#6abf8a' },

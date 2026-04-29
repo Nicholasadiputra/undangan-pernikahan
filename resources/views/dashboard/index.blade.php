@@ -39,7 +39,7 @@
     <div class="stat-card">
       <div class="stat-info">
         <span class="stat-label">Konfirmasi Hadir</span>
-        <span class="stat-value" id="konfHadir"><?= $hadir ?></span>
+        <span class="stat-value" id="konfHadir">{{ $hadir }}</span>
       </div>
       <div class="stat-icon green">
         <svg width="26" height="26" fill="none" stroke="#3a9e6a" stroke-width="2" viewBox="0 0 24 24">
@@ -51,7 +51,7 @@
     <div class="stat-card">
       <div class="stat-info">
         <span class="stat-label">Konfirmasi Tidak Hadir</span>
-        <span class="stat-value" id="konfTidak"><?= $tidakHadir ?></span>
+        <span class="stat-value" id="konfTidak">{{ $tidakHadir }}</span>
       </div>
       <div class="stat-icon red">
         <svg width="26" height="26" fill="none" stroke="#e05a52" stroke-width="2" viewBox="0 0 24 24">
@@ -67,7 +67,7 @@
     <div class="stat-card waiting">
       <div class="stat-info">
         <span class="stat-label">Menunggu Respon</span>
-        <span class="stat-value" id="menunggu"><?= $menunggu ?></span>
+        <span class="stat-value" id="menunggu">{{ $menunggu }}</span>
       </div>
       <div class="stat-icon orange">
         <svg width="26" height="26" fill="none" stroke="#b36200" stroke-width="2" viewBox="0 0 24 24">
