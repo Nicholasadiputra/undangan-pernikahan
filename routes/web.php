@@ -19,17 +19,14 @@ Route::get('/utama', [UndanganController::class, 'utama'])->name('undangan.utama
 // RSVP tamu
 Route::post('/proses-rsvp', [UndanganController::class, 'rsvp'])->name('rsvp');
 
-// Login
-Route::get('/login', [LoginController::class, 'index'])->name('login');
 // Logout (untuk semua role)
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
-// DASHBOARD LOGIN
+// DASHBOARD LOGIN (Kembalikan ke nama rute asli)
 Route::get('/dashboard/login', [LoginController::class, 'showAdminLogin'])->name('dashboard.login');
 Route::post('/dashboard/login', [LoginController::class, 'adminLogin'])->name('dashboard.login.post');
 
-
-// DASHBOARD (PROTECTED)
+// DASHBOARD (PROTECTED - Hanya gunakan middleware 'admin')
 Route::prefix('dashboard')->middleware('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/data-tamu', [TamuController::class, 'page'])->name('dashboard.tamu');
@@ -40,19 +37,15 @@ Route::prefix('dashboard')->middleware('admin')->group(function () {
     Route::put('/data-admin/{id}', [AdminController::class, 'update'])->name('dashboard.admin.update');
     Route::delete('/data-admin/{id}', [AdminController::class, 'destroy'])->name('dashboard.admin.destroy');
     
+    // Rute Landing Page terintegrasi di dalam grup admin
     Route::get('/edit-landing', [LandingController::class, 'index'])->name('dashboard.landing');
+    Route::post('/landing/update', [LandingController::class, 'update'])->name('landing.update');
 });
 
-
-// API TAMU (PROTECTED)
+// API TAMU (PROTECTED - Hanya gunakan middleware 'admin')
 Route::prefix('api')->middleware('admin')->group(function () {
     Route::get('/tamu', [TamuController::class, 'index']);
     Route::post('/tamu', [TamuController::class, 'store']);
     Route::put('/tamu/{id}', [TamuController::class, 'update']);
     Route::delete('/tamu/{id}', [TamuController::class, 'destroy']);
-});
-
-Route::middleware(['auth', 'admin'])->group(function () {
-    Route::get('/dashboard/landing/edit', [LandingController::class, 'edit'])->name('landing.edit');
-    Route::post('/dashboard/landing/update', [LandingController::class, 'update'])->name('landing.update');
 });

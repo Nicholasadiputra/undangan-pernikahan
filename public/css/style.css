@@ -122,3 +122,10 @@ img{display:block;}
     from { transform: rotate(0deg); }
     to { transform: rotate(360deg); }
 }
+
+.custom-map-container iframe {
+    display: block !important;
+    width: 100% !important;
+    height: 376px !important;
+    border: none !important;
+}

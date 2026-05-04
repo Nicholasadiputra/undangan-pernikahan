@@ -206,13 +206,11 @@
         </div>
 
         <!-- Map embed -->
-        <div class="w-[90%] mx-auto overflow-hidden rounded-[6px] mb-[20px] leading-[0]" style="border: 5px solid #321E04;">
-            <iframe
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3966.3!2d106.7902!3d-6.1752!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e69f6e0b4a4f5f5%3A0x1234567890abcdef!2sGrand%20Ballroom%20Ciputra%20Hotel%20Jakarta!5e0!3m2!1sen!2sid!4v1234567890"
-                class="block w-full h-[376px] border-none"
-                allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade">
-            </iframe>
+        @if(!empty($landing->map_iframe))
+        <div class="w-[90%] mx-auto overflow-hidden rounded-[6px] mb-[20px] leading-[0] custom-map-container" style="border: 5px solid #321E04;">
+            {!! $landing->map_iframe !!}
         </div>
+        @endif
 
         <!-- Link -->
         <a href="https://maps.google.com/?q=Grand+Ballroom+Ciputra+Hotel+Jakarta"

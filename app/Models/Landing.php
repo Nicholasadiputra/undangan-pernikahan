@@ -16,6 +16,7 @@ class Landing extends Model
     'is_private',
     'groom_name',
     'bride_name',
-    'wedding_date'
+    'wedding_date',
+    'map_iframe'
 ];
 }
