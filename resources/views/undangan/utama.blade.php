@@ -86,20 +86,20 @@
         <div class="absolute top-[30%] left-[30%] flex flex-col text-white tracking-[0.2em]">
             <h1 class="font-['La_Belle_Aurore'] text-[80px] font-bold text-white text-left"
                 style="text-shadow: 2px 2px 10px rgba(0,0,0,0.6);">
-                {{ $mempelai_pria }}
+                {{ $landing->groom_name ?? 'Groom' }}
             </h1>
             <div class="font-['Imperial_Script'] text-[90px] font-bold text-white text-right -mt-[10px]">
                 &
             </div>
             <h1 class="font-['La_Belle_Aurore'] text-[80px] font-bold text-white text-right -mt-[10px] translate-x-1/2"
                 style="text-shadow: 2px 2px 10px rgba(0,0,0,0.6);">
-                {{ $mempelai_wanita }}
+                {{ $landing->bride_name ?? 'Bride' }}
             </h1>
         </div>
 
         <!-- Date -->
         <p class="absolute font-jost font-semibold text-white text-[16px] tracking-[0.25em] mt-[600px]">
-            <?php $tanggal_acara?>
+            {{ $landing->wedding_date ? \Carbon\Carbon::parse($landing->wedding_date)->format('d F Y') : 'Tanggal Belum Ditentukan' }}
         </p>
     </section>
 
@@ -196,8 +196,8 @@
                 </p>
                 <p class="font-jost font-light text-black text-[15px] tracking-[0.15em] leading-[1.85] mb-[22px]">
                     Wedding Ceremony<br>
-                    {{ $lokasi_wedding }}
-                    {{ $kota }}
+                    {{ $landing->lokasi_wedding ?? 'Lokasi Belum Ditentukan' }}<br>
+                    {{ $landing->kota ?? '' }}
                 </p>
                 <p class="font-niconne text-[#321E04] text-[30px] font-normal">
                     Save Your Seat
@@ -207,17 +207,17 @@
 
         <!-- Map embed -->
         @if(!empty($landing->map_iframe))
-        <div class="w-[90%] mx-auto overflow-hidden rounded-[6px] mb-[20px] leading-[0] custom-map-container" style="border: 5px solid #321E04;">
+        <div class="w-[90%] mx-auto overflow-hidden rounded-[6px] mb-[20px] leading-[0] [&>iframe]:w-full [&>iframe]:h-[376px] [&>iframe]:block" style="border: 5px solid #321E04;">
             {!! $landing->map_iframe !!}
         </div>
-        @endif
 
         <!-- Link -->
-        <a href="https://maps.google.com/?q=Grand+Ballroom+Ciputra+Hotel+Jakarta"
+        <a href="https://maps.google.com/?q={{ urlencode(($landing->lokasi_wedding ?? '') . ' ' . ($landing->kota ?? '')) }}"
             target="_blank" rel="noopener noreferrer"
             class="block text-center font-jost font-semibold text-[#321E04] text-[15px] tracking-[0.15em] uppercase no-underline pt-[12px] pb-[4px] hover:underline underline-offset-4">
             Open on Google Maps
         </a>
+        @endif
     </section>
 
     <section class="bg-[#321E04] px-[40px] pt-[60px] pb-[70px] text-center">

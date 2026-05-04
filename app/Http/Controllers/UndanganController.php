@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tamu;
+use App\Models\Landing;
 
 class UndanganController extends Controller
 {
@@ -14,15 +15,11 @@ class UndanganController extends Controller
 
     public function utama()
     {
-        if (!session('login')) return redirect('/');
+        // Ambil data landing page pertama atau buat instance kosong jika belum ada data
+        $landing = Landing::first() ?? new Landing(); 
 
-        return view('undangan.utama', [
-            'mempelai_pria'    => 'Nicholas',
-            'mempelai_wanita'  => 'Nahda',
-            'tanggal_acara'    => 'SATURDAY - 2026 - DECEMBER',
-            'lokasi_wedding'   => "Grand Ballroom, Ciputra's Hotel",
-            'kota'             => 'Jakarta, Indonesia',
-        ]);
+        // Kirim variabel $landing ke view 'undangan.utama'
+        return view('undangan.utama', compact('landing'));
     }
 
     public function rsvp(Request $request)

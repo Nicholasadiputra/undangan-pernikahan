@@ -24,13 +24,16 @@ class LandingController extends Controller
         $landing->groom_name = $request->input('groom_name');
         $landing->bride_name = $request->input('bride_name');
         $landing->wedding_date = $request->input('wedding_date');
-        $landing->map_iframe = $request->input('map_iframe'); // LETAKKAN DI SINI
+        $landing->lokasi_wedding = $request->input('lokasi_wedding');
+        $landing->kota = $request->input('kota');
+        $landing->map_iframe = $request->input('map_iframe'); 
 
         // 2. Tangani Data Checkbox (Boolean)
         $landing->show_animation = $request->has('show_animation');
         $landing->play_music = $request->has('play_music');
         $landing->show_guest_name = $request->has('show_guest_name');
         $landing->is_private = $request->has('is_private');
+
 
         // 3. Tangani Upload File Gambar (Hero Image)
         if ($request->hasFile('hero_image')) {

@@ -17,6 +17,9 @@ class Landing extends Model
     'groom_name',
     'bride_name',
     'wedding_date',
+    'lokasi_wedding', 
+    'kota',
     'map_iframe'
+
 ];
 }

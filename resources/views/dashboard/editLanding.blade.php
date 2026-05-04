@@ -37,30 +37,41 @@
       <!-- INFORMASI ACARA -->
       <div class="card full-col">
         <div class="card-header" style="margin-bottom:15px;">
-          <h2>Informasi Mempelai & Acara</h2>
+            <h2>Informasi Mempelai & Acara</h2>
         </div>
 
         <div class="setting-row" style="display: block; margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 500;">Nama Mempelai Pria</label>
-          <input type="text" name="groom_name" value="{{ old('groom_name', $landing->groom_name ?? '') }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" placeholder="Contoh: Nicholas">
+            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Nama Mempelai Pria</label>
+            <input type="text" name="groom_name" value="{{ old('groom_name', $landing->groom_name ?? '') }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" placeholder="Contoh: Nicholas">
         </div>
 
         <div class="setting-row" style="display: block; margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 500;">Nama Mempelai Wanita</label>
-          <input type="text" name="bride_name" value="{{ old('bride_name', $landing->bride_name ?? '') }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" placeholder="Contoh: Nahda">
+            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Nama Mempelai Wanita</label>
+            <input type="text" name="bride_name" value="{{ old('bride_name', $landing->bride_name ?? '') }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" placeholder="Contoh: Nahda">
         </div>
 
         <div class="setting-row" style="display: block; margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 500;">Tanggal Pernikahan</label>
-          <input type="date" name="wedding_date" value="{{ old('wedding_date', $landing->wedding_date ?? '') }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Tanggal Pernikahan</label>
+            <input type="date" name="wedding_date" value="{{ old('wedding_date', $landing->wedding_date ?? '') }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;">
+        </div>
+
+        <!-- BLOK LOKASI BARU -->
+        <div class="setting-row" style="display: block; margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Nama Gedung / Tempat Acara</label>
+            <input type="text" name="lokasi_wedding" value="{{ old('lokasi_wedding', $landing->lokasi_wedding ?? '') }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" placeholder="Contoh: Grand Ballroom Ciputra Hotel">
         </div>
 
         <div class="setting-row" style="display: block; margin-bottom: 15px;">
-          <label style="display: block; margin-bottom: 5px; font-weight: 500;">Lokasi Peta (Iframe Google Maps)</label>
-          <textarea name="map_iframe" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" rows="4" placeholder='<iframe src="https://www.google.com/maps/embed?..."></iframe>'>{{ old('map_iframe', $landing->map_iframe ?? '') }}</textarea>
-          <small style="color: #666; display: block; margin-top: 5px;">Salin kode HTML (Embed a map) langsung dari Google Maps dan tempel di sini.</small>
+            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Kota</label>
+            <input type="text" name="kota" value="{{ old('kota', $landing->kota ?? '') }}" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" placeholder="Contoh: Jakarta Barat">
         </div>
-      </div>
+
+        <div class="setting-row" style="display: block; margin-bottom: 15px;">
+            <label style="display: block; margin-bottom: 5px; font-weight: 500;">Lokasi Peta (Iframe Google Maps)</label>
+            <textarea name="map_iframe" style="width: 100%; padding: 10px; border: 1px solid #ddd; border-radius: 6px;" rows="4" placeholder='<iframe src="https://www.google.com/maps/embed?..."></iframe>'>{{ old('map_iframe', $landing->map_iframe ?? '') }}</textarea>
+            <small style="color: #666; display: block; margin-top: 5px;">Salin kode HTML (Embed a map) langsung dari Google Maps dan tempel di sini.</small>
+        </div>
+    </div>
 
       <!-- PILIH TAMPILAN -->
       <div class="card full-col">
