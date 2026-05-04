@@ -12,7 +12,7 @@ class LandingController extends Controller
     public function index()
     {
         $landing = Landing::first() ?? new Landing();
-        return view('dashboard.landing.edit', compact('landing'));
+        return view('dashboard.editlanding', compact('landing'));
     }
 
     public function update(Request $request)
@@ -21,6 +21,9 @@ class LandingController extends Controller
             'title' => 'nullable|string|max:255',
             'description' => 'nullable|string',
             'hero_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'groom_name' => 'nullable|string|max:255',
+            'bride_name' => 'nullable|string|max:255',
+            'wedding_date' => 'nullable|date',
         ]);
 
         $landing = Landing::first() ?? new Landing();

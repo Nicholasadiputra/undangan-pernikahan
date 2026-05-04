@@ -12,6 +12,9 @@ return new class extends Migration {
             $table->text('description')->nullable();
             $table->string('hero_image')->nullable();
             $table->timestamps();
+            $table->string('groom_name')->nullable();
+            $table->string('bride_name')->nullable();
+            $table->date('wedding_date')->nullable();
         });
     }
 

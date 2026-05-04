@@ -19,6 +19,8 @@ Route::get('/utama', [UndanganController::class, 'utama'])->name('undangan.utama
 // RSVP tamu
 Route::post('/proses-rsvp', [UndanganController::class, 'rsvp'])->name('rsvp');
 
+// Login
+Route::get('/login', [LoginController::class, 'index'])->name('login');
 // Logout (untuk semua role)
 Route::get('/logout', [LoginController::class, 'logout'])->name('logout');
 
