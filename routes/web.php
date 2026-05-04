@@ -49,3 +49,8 @@ Route::prefix('api')->middleware('admin')->group(function () {
     Route::put('/tamu/{id}', [TamuController::class, 'update']);
     Route::delete('/tamu/{id}', [TamuController::class, 'destroy']);
 });
+
+Route::middleware(['auth', 'admin'])->group(function () {
+    Route::get('/dashboard/landing/edit', [LandingController::class, 'edit'])->name('landing.edit');
+    Route::post('/dashboard/landing/update', [LandingController::class, 'update'])->name('landing.update');
+});
