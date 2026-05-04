@@ -126,7 +126,7 @@
             </p>
             <hr class="border-none h-[1px] bg-[#C9A96E] my-[20px]">
             <p class="font-niconne text-[#321E04] text-[35px] tracking-[0.15em]">
-                Nicholas & Nahda
+                {{ $landing->groom_name ?? 'Groom' }} & {{ $landing->bride_name ?? 'Bride' }}
             </p>
         </div>
     </section>

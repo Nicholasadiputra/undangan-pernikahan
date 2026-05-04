@@ -4,7 +4,7 @@
     <meta charset="UTF-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>Nicholas & Nahda – Wedding Invitation</title>
+    <title>{{ $landing->groom_name ?? 'Nicholas' }} & {{ $landing->bride_name ?? 'Nahda' }} – Wedding Invitation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com"/>
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
     <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Montserrat:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
@@ -17,13 +17,13 @@
 <!-- HERO -->
 <section class="hero" id="top">
     <div class="hero__bg-placeholder"></div>
-    <img class="hero__bg" src="images/hero-bg.jpg" alt="Nicholas & Nahda" onerror="this.style.display='none'"/>
+    <img class="hero__bg" src="images/hero-bg.jpg" alt="{{ $landing->groom_name ?? 'Nicholas' }} & {{ $landing->bride_name ?? 'Nahda' }}" onerror="this.style.display='none'"/>
     <div class="hero__overlay"></div>
     <div class="hero__content">
         <div class="hero__names">
-            <span class="hero__name">Nicholas</span>
+            <span class="hero__name">{{ $landing->groom_name ?? 'Nicholas' }}</span>
             <span class="hero__amp">&amp;</span>
-            <span class="hero__name">Nahda</span>
+            <span class="hero__name">{{ $landing->bride_name ?? 'Nahda' }}</span>
         </div>
         <div class="hero__card">
             <p class="hero__card-text">Together with our families, we invite you to<br>share in the joy of our wedding celebration.</p>

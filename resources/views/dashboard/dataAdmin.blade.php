@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Nicholas & Nahda — Data Admin</title>
+    <title>{{ \App\Models\Landing::first()->groom_name ?? 'Nicholas' }} & {{ \App\Models\Landing::first()->bride_name ?? 'Nahda' }} — Data Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/dashboard.css"/>
     <link rel="stylesheet" href="/css/dataAdmin.css">

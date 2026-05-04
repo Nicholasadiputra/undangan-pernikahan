@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8"/>
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nicholas & Nahda — Login Admin</title>
+  <title>{{ \App\Models\Landing::first()->groom_name ?? 'Nicholas' }} & {{ \App\Models\Landing::first()->bride_name ?? 'Nahda' }} — Login Admin</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -57,7 +57,7 @@
 </head>
 <body>
 <div class="card">
-  <div class="logo">NICHOLAS<br>&amp; NAHDA</div>
+  <div class="logo">{{ strtoupper(\App\Models\Landing::first()->groom_name ?? 'NICHOLAS') }}<br>&amp; {{ strtoupper(\App\Models\Landing::first()->bride_name ?? 'NAHDA') }}</div>
   <div class="sub">Admin Dashboard</div>
 
   @if ($errors->has('login'))

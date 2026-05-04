@@ -1,5 +1,6 @@
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo">NICHOLAS<br>&amp;<br>NAHDA</div>
+  @php $landingData = \App\Models\Landing::first(); @endphp
+  <div class="sidebar-logo">{{ strtoupper($landingData->groom_name ?? 'NICHOLAS') }}<br>&amp;<br>{{ strtoupper($landingData->bride_name ?? 'NAHDA') }}</div>
   <nav class="sidebar-nav">
     <a class="nav-item {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" href="{{ route('dashboard.index') }}">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

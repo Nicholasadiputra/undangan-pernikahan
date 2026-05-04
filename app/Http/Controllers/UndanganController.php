@@ -10,7 +10,8 @@ class UndanganController extends Controller
 {
     public function index()
     {
-        return view('undangan.index');
+        $landing = Landing::first() ?? new Landing(); 
+        return view('undangan.index', compact('landing'));
     }
 
     public function utama()

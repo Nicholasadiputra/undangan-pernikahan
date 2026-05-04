@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Nicholas & Nahda — Edit Landing Page</title>
+  <title>{{ \App\Models\Landing::first()->groom_name ?? 'Nicholas' }} & {{ \App\Models\Landing::first()->bride_name ?? 'Nahda' }} — Edit Landing Page</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="{{ asset('css/editLanding.css') }}"/>
   <script src="{{ asset('js/editLanding.js') }}" defer></script>
