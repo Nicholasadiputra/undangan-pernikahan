@@ -22,7 +22,7 @@
 
 /* ── Reset / Base ── */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-* { font-family: 'DM Sans', sans-serif; }
+body { font-family: 'DM Sans', sans-serif; }
 
 body {
     font-family: 'DM Sans', sans-serif;
@@ -45,8 +45,8 @@ body {
 }
 
 .sidebar-logo {
-    font-family: 'Playfair Display', serif;
-    color: var(--white);
+    font-family: 'Playfair Display', serif !important;
+    color: #ffffff !important;
     text-align: center;
     font-size: 1.35rem;
     line-height: 1.35;
@@ -67,15 +67,17 @@ body {
     gap: 12px;
     padding: 12px 16px;
     border-radius: 12px;
-    color: rgba(255,255,255,.65);
-    text-decoration: none;
+    color: rgba(255,255,255,.65) !important;
+    text-decoration: none !important;
     font-size: .9rem;
     font-weight: 500;
+    line-height: 1.4;
+    letter-spacing: normal;
     cursor: pointer;
     transition: background .2s, color .2s;
 }
 .nav-item:hover { background: rgba(255,255,255,.1); color: #fff; }
-.nav-item.active { background: var(--white); color: var(--brown); }
+.nav-item.active { background: #ffffff !important; color: #321E04 !important; }
 .nav-item svg { flex-shrink: 0; }
 
 .sidebar-logout {
@@ -84,8 +86,11 @@ body {
     gap: 12px;
     padding: 12px 16px;
     color: rgba(255,255,255,.5);
+    text-decoration: none !important;
     cursor: pointer;
     font-size: .9rem;
+    font-weight: 400;
+    line-height: 1.4;
     transition: color .2s;
 }
 .sidebar-logout:hover { color: #fff; }

@@ -1,37 +1,35 @@
 // ═══ SIDEBAR ═══
-const sidebar   = document.getElementById('sidebar');
-const overlay   = document.getElementById('overlay');
+const sidebar = document.getElementById('sidebar');
+const overlay = document.getElementById('overlay');
 const hamburger = document.getElementById('hamburger');
 hamburger.addEventListener('click', () => { sidebar.classList.toggle('open'); overlay.classList.toggle('open'); });
 overlay.addEventListener('click', () => { sidebar.classList.remove('open'); overlay.classList.remove('open'); });
 
 // ═══ GALLERY ═══
 const SLOTS = {
-  landing:        { label: 'Landing',               max: 1 },
-  ucapan1:        { label: 'Ucapan 1',              max: 1 },
-  ucapan2:        { label: 'Ucapan 2',              max: 1 },
-  ucapan3:        { label: 'Ucapan 3',              max: 1 },
-  save_the_date:  { label: 'Save the Date',         max: 1 },
-  venue:          { label: 'Venue',                  max: 1 },
-  dresscode1:     { label: 'Dress Code 1',          max: 1 },
-  dresscode2:     { label: 'Dress Code 2',          max: 1 },
-  dresscode3:     { label: 'Dress Code 3',          max: 1 },
-  dresscode4:     { label: 'Dress Code 4',          max: 1 },
-  story1:         { label: 'Story 1',               max: 1 },
-  story2:         { label: 'Story 2',               max: 1 },
-  ayah_pria:      { label: 'Ayah Mempelai Pria',   max: 1 },
-  ibu_pria:       { label: 'Ibu Mempelai Pria',    max: 1 },
-  ayah_wanita:    { label: 'Ayah Mempelai Wanita', max: 1 },
-  ibu_wanita:     { label: 'Ibu Mempelai Wanita',  max: 1 },
-  galeri:         { label: 'Galeri',                max: Infinity },
-  penutup:        { label: 'Penutup',               max: 1 },
+  landing: { label: 'Landing', max: 1 },
+  ucapan1: { label: 'Ucapan 1', max: 1 },
+  save_the_date: { label: 'Save the Date', max: 1 },
+  venue: { label: 'Venue', max: 1 },
+  dresscode1: { label: 'Dress Code 1', max: 1 },
+  dresscode2: { label: 'Dress Code 2', max: 1 },
+  dresscode3: { label: 'Dress Code 3', max: 1 },
+  dresscode4: { label: 'Dress Code 4', max: 1 },
+  story1: { label: 'Story 1', max: 1 },
+  story2: { label: 'Story 2', max: 1 },
+  ayah_pria: { label: 'Ayah Mempelai Pria', max: 1 },
+  ibu_pria: { label: 'Ibu Mempelai Pria', max: 1 },
+  ayah_wanita: { label: 'Ayah Mempelai Wanita', max: 1 },
+  ibu_wanita: { label: 'Ibu Mempelai Wanita', max: 1 },
+  galeri: { label: 'Galeri', max: 7 },
+  penutup: { label: 'Penutup', max: 1 },
 };
 
 const imageSlots = {};
 const slotCounts = {};
 Object.keys(SLOTS).forEach(k => slotCounts[k] = 0);
 
-let imgCounter   = 0;
+let imgCounter = 0;
 let activeMenuId = null;
 
 // galleryImages: { id, url (base64 preview), savedPath (dari server setelah upload) }
@@ -56,8 +54,8 @@ if (typeof initialGallery !== 'undefined') {
 
 function slotAvailable(key, forImage) {
   const current = imageSlots[forImage];
-  const taken   = slotCounts[key] || 0;
-  const max     = SLOTS[key].max;
+  const taken = slotCounts[key] || 0;
+  const max = SLOTS[key].max;
   if (current === key) return true;
   return taken < max;
 }
@@ -75,7 +73,7 @@ function assignSlot(imgId, slotKey) {
 function updateBadge(imgId, slotKey) {
   const badge = document.getElementById('badge-' + imgId);
   if (badge) {
-    badge.textContent   = SLOTS[slotKey].label;
+    badge.textContent = SLOTS[slotKey].label;
     badge.style.display = 'block';
   }
 }
@@ -131,41 +129,49 @@ function renderGallery() {
     if (imageSlots[img.id]) updateBadge(img.id, imageSlots[img.id]);
   });
 
-  // Tombol tambah foto
-  const uploadEl = document.createElement('div');
-  uploadEl.className = 'gallery-upload cursor-pointer';
-  uploadEl.style.cssText = 'aspect-ratio:1/1;border-radius:10px;border:1.5px dashed #E8D8C4;background:#F5EDE0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;';
-  uploadEl.onclick = () => {
-    const fi = document.createElement('input');
-    fi.type     = 'file';
-    fi.accept   = 'image/*';
-    fi.multiple = true;
-    fi.style.display = 'none';
-    document.body.appendChild(fi);
-    fi.onchange = (e) => {
-      handleGalleryUpload(e);
-      document.body.removeChild(fi);
+  // Hitung total kapasitas maksimal semua slot
+  let totalMaxCapacity = 0;
+  Object.values(SLOTS).forEach(slot => {
+    totalMaxCapacity += slot.max;
+  });
+
+  // Tombol tambah foto HANYA muncul jika belum mencapai kapasitas maksimal
+  if (galleryImages.length < totalMaxCapacity) {
+    const uploadEl = document.createElement('div');
+    uploadEl.className = 'gallery-upload cursor-pointer';
+    uploadEl.style.cssText = 'aspect-ratio:1/1;border-radius:10px;border:1.5px dashed #E8D8C4;background:#F5EDE0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:5px;cursor:pointer;';
+    uploadEl.onclick = () => {
+      const fi = document.createElement('input');
+      fi.type = 'file';
+      fi.accept = 'image/*';
+      fi.multiple = true;
+      fi.style.display = 'none';
+      document.body.appendChild(fi);
+      fi.onchange = (e) => {
+        handleGalleryUpload(e);
+        document.body.removeChild(fi);
+      };
+      fi.click();
     };
-    fi.click();
-  };
-  uploadEl.innerHTML = `
-    <svg width="24" height="24" fill="none" stroke="#9A7B5C" stroke-width="1.8" viewBox="0 0 24 24">
-      <path d="M12 5v14M5 12h14"/>
-    </svg>
-    <span style="font-size:11px;font-weight:500;color:#9A7B5C;">Tambah Foto</span>
-  `;
-  grid.appendChild(uploadEl);
+    uploadEl.innerHTML = `
+      <svg width="24" height="24" fill="none" stroke="#9A7B5C" stroke-width="1.8" viewBox="0 0 24 24">
+        <path d="M12 5v14M5 12h14"/>
+      </svg>
+      <span style="font-size:11px;font-weight:500;color:#9A7B5C;">Tambah Foto</span>
+    `;
+    grid.appendChild(uploadEl);
+  }
 }
 
 function buildMenuItems(imgId) {
   return Object.entries(SLOTS).map(([key, slot]) => {
-    const selected  = imageSlots[imgId] === key;
+    const selected = imageSlots[imgId] === key;
     const available = slotAvailable(key, imgId);
-    const taken     = slotCounts[key] || 0;
+    const taken = slotCounts[key] || 0;
     let cls = 'ham-menu-item';
     if (selected) cls += ' selected';
     else if (!available) cls += ' taken';
-    const badge   = slot.max === Infinity
+    const badge = slot.max === Infinity
       ? `<span class="slot-badge">${taken} foto</span>`
       : `<span class="slot-badge">${taken}/${slot.max}</span>`;
     const onclick = (selected || !available) ? '' : `onclick="assignSlot('${imgId}','${key}')"`;
@@ -230,19 +236,19 @@ function handleGalleryUpload(e) {
         method: 'POST',
         body: fd,
       })
-      .then(r => r.json())
-      .then(data => {
-        const img = galleryImages.find(i => i.id === id);
-        if (img) {
-          img.savedPath = data.path;
-          renderGallery(); // hilangkan "uploading..." overlay
-          syncGalleryToForm();
-        }
-      })
-      .catch(err => {
-        alert('Gagal upload foto: ' + err.message);
-        removeImage(id);
-      });
+        .then(r => r.json())
+        .then(data => {
+          const img = galleryImages.find(i => i.id === id);
+          if (img) {
+            img.savedPath = data.path;
+            renderGallery(); // hilangkan "uploading..." overlay
+            syncGalleryToForm();
+          }
+        })
+        .catch(err => {
+          alert('Gagal upload foto: ' + err.message);
+          removeImage(id);
+        });
     };
     reader.readAsDataURL(file);
   });
@@ -257,14 +263,14 @@ function syncGalleryToForm() {
     if (!img.savedPath) return;
 
     const pathInput = document.createElement('input');
-    pathInput.type  = 'hidden';
-    pathInput.name  = 'gallery_paths[]';
+    pathInput.type = 'hidden';
+    pathInput.name = 'gallery_paths[]';
     pathInput.value = img.savedPath;
     form.appendChild(pathInput);
 
     const slotInput = document.createElement('input');
-    slotInput.type  = 'hidden';
-    slotInput.name  = 'gallery_slots[]';
+    slotInput.type = 'hidden';
+    slotInput.name = 'gallery_slots[]';
     slotInput.value = imageSlots[img.id] || '';
     form.appendChild(slotInput);
   });
@@ -273,7 +279,15 @@ function syncGalleryToForm() {
 renderGallery();
 
 // ═══ KEGIATAN ═══
-const kegiatanList = [{ name: '', time: '', period: 'AM' }];
+let kegiatanList = [{ name: '', time: '', period: 'AM' }];
+
+if (typeof initialKegiatan !== 'undefined' && initialKegiatan && initialKegiatan.length > 0) {
+  kegiatanList = initialKegiatan;
+  // Pastikan selalu ada satu baris kosong di bagian paling bawah, HANYA jika kurang dari 8
+  if (kegiatanList.length < 8 && kegiatanList[kegiatanList.length - 1].name.trim() !== '') {
+    kegiatanList.push({ name: '', time: '', period: 'AM' });
+  }
+}
 
 function renderKegiatan() {
   const container = document.getElementById('kegiatan-list');
@@ -283,6 +297,10 @@ function renderKegiatan() {
     const row = document.createElement('div');
     row.className = 'kegiatan-row';
     row.dataset.idx = idx;
+    
+    const isLastAndEmpty = (idx === kegiatanList.length - 1 && item.name.trim() === '');
+    const showRemove = kegiatanList.length > 1 && !isLastAndEmpty;
+
     row.innerHTML = `
       <div class="inp-icon-wrap" style="flex:1;">
         <svg class="inp-icon" style="width:14px;height:14px;" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -291,18 +309,18 @@ function renderKegiatan() {
         <input type="text" name="kegiatan_name[]" class="inp"
           style="padding-left:32px;padding-right:8px;font-size:13px;"
           placeholder="Kegiatan ${idx + 1}" value="${item.name}"
-          oninput="onKegiatanInput(${idx}, 'name', this.value)" />
+          oninput="onKegiatanInput(${idx}, 'name', this)" />
       </div>
       <div style="display:flex;align-items:center;gap:4px;flex-shrink:0;">
         <input type="time" name="kegiatan_time[]" class="time-inp" value="${item.time}"
-          onchange="onKegiatanInput(${idx}, 'time', this.value)" title="Waktu" />
+          onchange="onKegiatanInput(${idx}, 'time', this)" title="Waktu" />
         <div class="ampm-toggle">
           <button type="button" class="ampm-btn ${item.period === 'AM' ? 'active' : ''}" onclick="setPeriod(${idx}, 'AM')">AM</button>
           <button type="button" class="ampm-btn ${item.period === 'PM' ? 'active' : ''}" onclick="setPeriod(${idx}, 'PM')">PM</button>
         </div>
         <input type="hidden" name="kegiatan_period[]" value="${item.period}" id="period-inp-${idx}" />
       </div>
-      ${kegiatanList.length > 1
+      ${showRemove
         ? `<button type="button" class="remove-btn" onclick="removeKegiatan(${idx})">
              <svg style="width:12px;height:12px;" fill="none" stroke="currentColor" stroke-width="2.2" viewBox="0 0 24 24">
                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
@@ -322,34 +340,31 @@ function setPeriod(idx, val) {
   renderKegiatan();
 }
 
-function onKegiatanInput(idx, field, val) {
+function onKegiatanInput(idx, field, el) {
+  const val = el.value;
   kegiatanList[idx][field] = val;
+  
   if (field === 'name' && val.trim() !== '' && idx === kegiatanList.length - 1) {
-    kegiatanList.push({ name: '', time: '', period: 'AM' });
-    renderKegiatan();
-    setTimeout(() => {
-      const rows = document.querySelectorAll('#kegiatan-list .kegiatan-row');
-      const newRow = rows[rows.length - 1];
-      if (newRow) { const inp = newRow.querySelector('input[type="text"]'); if (inp) inp.focus(); }
-    }, 50);
-  } else if (field === 'name' && val.trim() === '' && kegiatanList.length > 1) {
-    trimTrailingEmpty();
+    if (kegiatanList.length < 8) {
+      kegiatanList.push({ name: '', time: '', period: 'AM' });
+      
+      const selectionStart = el.selectionStart;
+      renderKegiatan();
+      
+      const restoredInput = document.querySelector(`.kegiatan-row[data-idx="${idx}"] input[name="kegiatan_name[]"]`);
+      if (restoredInput) {
+        restoredInput.focus();
+        restoredInput.setSelectionRange(selectionStart, selectionStart);
+      }
+    }
   }
-}
-
-function trimTrailingEmpty() {
-  while (
-    kegiatanList.length > 1 &&
-    kegiatanList[kegiatanList.length - 1].name.trim() === '' &&
-    kegiatanList[kegiatanList.length - 2].name.trim() === ''
-  ) { kegiatanList.pop(); }
-  renderKegiatan();
 }
 
 function removeKegiatan(idx) {
   kegiatanList.splice(idx, 1);
-  if (kegiatanList.length === 0) kegiatanList.push({ name: '', time: '', period: 'AM' });
-  if (kegiatanList[kegiatanList.length - 1].name.trim() !== '') {
+  if (kegiatanList.length === 0) {
+    kegiatanList.push({ name: '', time: '', period: 'AM' });
+  } else if (kegiatanList[kegiatanList.length - 1].name.trim() !== '' && kegiatanList.length < 8) {
     kegiatanList.push({ name: '', time: '', period: 'AM' });
   }
   renderKegiatan();
@@ -358,8 +373,13 @@ function removeKegiatan(idx) {
 renderKegiatan();
 
 // ═══ PALETTE ═══
-const paletteColors  = ['#FAF6F0', '#E8C98A', '#A07850', '#5C3A1E', '#1A1A1A'];
-let activeSwatchIdx  = 0;
+let paletteColors = ['#FAF6F0', '#E8C98A', '#A07850', '#5C3A1E', '#1A1A1A'];
+
+if (typeof initialPalette !== 'undefined' && initialPalette !== null) {
+  paletteColors = initialPalette;
+}
+
+let activeSwatchIdx = 0;
 let editingSwatchIdx = null;
 
 function renderPalette() {
@@ -371,11 +391,11 @@ function renderPalette() {
     wrap.className = 'swatch-wrap';
 
     const btn = document.createElement('button');
-    btn.type      = 'button';
+    btn.type = 'button';
     btn.className = 'palette-swatch' + (i === activeSwatchIdx ? ' active' : '');
     btn.style.background = color;
-    btn.title     = color;
-    btn.onclick   = () => {
+    btn.title = color;
+    btn.onclick = () => {
       if (activeSwatchIdx === i) {
         editingSwatchIdx = i;
         const picker = document.getElementById('globalColorPicker');
@@ -385,10 +405,10 @@ function renderPalette() {
     wrap.appendChild(btn);
 
     const editBtn = document.createElement('button');
-    editBtn.type      = 'button';
+    editBtn.type = 'button';
     editBtn.className = 'swatch-edit';
     editBtn.innerHTML = '✏';
-    editBtn.onclick   = e => {
+    editBtn.onclick = e => {
       e.stopPropagation();
       editingSwatchIdx = i;
       const picker = document.getElementById('globalColorPicker');
@@ -397,10 +417,10 @@ function renderPalette() {
     wrap.appendChild(editBtn);
 
     const delBtn = document.createElement('button');
-    delBtn.type      = 'button';
+    delBtn.type = 'button';
     delBtn.className = 'swatch-delete';
     delBtn.innerHTML = '×';
-    delBtn.onclick   = e => {
+    delBtn.onclick = e => {
       e.stopPropagation();
       paletteColors.splice(i, 1);
       if (activeSwatchIdx >= paletteColors.length) activeSwatchIdx = paletteColors.length - 1;
@@ -412,10 +432,10 @@ function renderPalette() {
   });
 
   const addBtn = document.createElement('button');
-  addBtn.type      = 'button';
+  addBtn.type = 'button';
   addBtn.className = 'add-color-btn';
   addBtn.innerHTML = '+';
-  addBtn.onclick   = () => {
+  addBtn.onclick = () => {
     editingSwatchIdx = null;
     const picker = document.getElementById('globalColorPicker');
     picker.value = '#C4860A'; picker.click();
@@ -424,16 +444,20 @@ function renderPalette() {
 
   const hint = document.createElement('p');
   hint.style.cssText = 'width:100%;font-size:10px;color:#9A7B5C;margin-top:6px;';
-  hint.textContent   = 'Klik = pilih · Klik lagi atau ✏ = ubah · × = hapus';
+  hint.textContent = 'Klik = pilih · Klik lagi atau ✏ = ubah · × = hapus';
   row.appendChild(hint);
 
   syncPaletteToForm();
 }
 
 function commitColor(val) {
-  if (editingSwatchIdx !== null) { paletteColors[editingSwatchIdx] = val; }
-  else { paletteColors.push(val); activeSwatchIdx = paletteColors.length - 1; }
-  editingSwatchIdx = null;
+  if (editingSwatchIdx !== null) { 
+      paletteColors[editingSwatchIdx] = val; 
+  } else { 
+      paletteColors.push(val); 
+      activeSwatchIdx = paletteColors.length - 1; 
+      editingSwatchIdx = activeSwatchIdx; // Simpan index agar oninput selanjutnya mengupdate warna ini
+  }
   renderPalette();
 }
 
@@ -442,8 +466,8 @@ function syncPaletteToForm() {
   const form = document.getElementById('landingForm');
   paletteColors.forEach(c => {
     const inp = document.createElement('input');
-    inp.type  = 'hidden';
-    inp.name  = 'palette_colors[]';
+    inp.type = 'hidden';
+    inp.name = 'palette_colors[]';
     inp.value = c;
     form.appendChild(inp);
   });
@@ -452,12 +476,43 @@ function syncPaletteToForm() {
 renderPalette();
 
 // ═══ TEMPLATE ═══
+const TEMPLATE_DEFAULTS = {
+  bohemian: { primary: '#321E04', accent: '#C9A96E', mid: '#7A5C3A', bg: '#f5f1eb' },
+  modern:   { primary: '#1E2A3A', accent: '#8FA3B1', mid: '#4A6572', bg: '#F4F6F7' },
+};
+
 function selectTemplate(name) {
   document.getElementById('selected_template').value = name;
   const label = document.getElementById('previewLabel');
   if (label) label.textContent = name.charAt(0).toUpperCase() + name.slice(1) + ' Template';
   document.querySelectorAll('.tpl-card').forEach(c => c.classList.remove('selected'));
   document.getElementById('tpl-' + name).classList.add('selected');
+  // auto-reset warna ke default template yang dipilih
+  resetColors(name);
+}
+
+// ═══ CUSTOM WARNA ═══
+function syncColorPicker(key, value) {
+  document.getElementById('txt_color_' + key).value = value;
+  document.getElementById('preview_color_' + key).style.background = value;
+}
+
+function syncColorInput(key, value) {
+  if (/^#[0-9A-Fa-f]{6}$/.test(value)) {
+    document.getElementById('pick_color_' + key).value = value;
+    document.getElementById('preview_color_' + key).style.background = value;
+  }
+}
+
+function resetColors(templateName) {
+  const name = templateName || document.getElementById('selected_template').value || 'bohemian';
+  const d = TEMPLATE_DEFAULTS[name] || TEMPLATE_DEFAULTS.bohemian;
+  ['primary', 'accent', 'mid', 'bg'].forEach(key => {
+    const val = d[key];
+    document.getElementById('txt_color_' + key).value = val;
+    document.getElementById('pick_color_' + key).value = val;
+    document.getElementById('preview_color_' + key).style.background = val;
+  });
 }
 
 function handleUploadLabel(input, labelId) {
@@ -467,8 +522,8 @@ function handleUploadLabel(input, labelId) {
 }
 
 // ═══ SUBMIT — biarkan form submit biasa, galeri sudah diupload via AJAX ═══
-document.getElementById('landingForm').addEventListener('submit', function() {
+document.getElementById('landingForm').addEventListener('submit', function () {
   syncGalleryToForm();
   syncPaletteToForm();
-  
+
 });

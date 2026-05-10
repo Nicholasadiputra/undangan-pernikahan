@@ -41,7 +41,7 @@
         </div>
         <div class="invitation__text">
             <div class="inv-label reveal" style="transition-delay:.07s">Wedding Invitation</div>
-            <h2 class="inv-heading reveal" style="transition-delay:.13s">Hey, Tamu Undangan</h2>
+            <h2 class="inv-heading reveal" style="transition-delay:.13s">Hey, {{ request('to', 'Tamu Undangan') }}</h2>
             <p class="inv-body reveal">Welcome to our wedding invitation page. We would be honored to have your presence and blessings on our special day.</p>
             <div class="inv-ornament reveal" style="transition-delay:.25s">
                 <span class="inv-ornament__dot"></span>

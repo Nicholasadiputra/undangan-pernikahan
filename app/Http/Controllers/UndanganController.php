@@ -16,11 +16,15 @@ class UndanganController extends Controller
 
     public function utama()
     {
-        // Ambil data landing page pertama atau buat instance kosong jika belum ada data
-        $landing = Landing::first() ?? new Landing(); 
+        $landing = Landing::first() ?? new Landing();
 
-        // Kirim variabel $landing ke view 'undangan.utama'
-        return view('undangan.utama', compact('landing'));
+        // Pilih view berdasarkan template yang disimpan di database
+        $template = $landing->template ?? 'bohemian';
+        $view = in_array($template, ['bohemian', 'modern'])
+            ? 'undangan.' . $template
+            : 'undangan.bohemian';
+
+        return view($view, compact('landing'));
     }
 
     public function rsvp(Request $request)

@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>Nicholas & Nahda — Data Admin</title>
+    <title>{{ $landing->groom_name ?? 'Groom' }} & {{ $landing->bride_name ?? 'Bride' }} — Data Admin</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet"/>
     <link rel="stylesheet" href="/css/dashboard.css"/>
     <link rel="stylesheet" href="/css/dataAdmin.css">
@@ -19,10 +19,14 @@
 @include('dashboard.partials.sidebar')
 
 <main class="main">
-    <h1 class="page-title">Data Admin & User</h1>
+    <h1 class="page-title">Data Admin</h1>
 
     @if(session('success'))
         <div class="alert alert-success">{{ session('success') }}</div>
+    @endif
+
+    @if(session('error'))
+        <div class="alert alert-danger">{{ session('error') }}</div>
     @endif
 
     @if($errors->any())
@@ -47,7 +51,6 @@
                     <tr>
                         <th>No</th>
                         <th>Username</th>
-                        <th>Role</th>
                         <th>Aksi</th>
                     </tr>
                 </thead>
@@ -56,9 +59,8 @@
                     <tr>
                         <td>{{ $loop->iteration }}</td>
                         <td>{{ $user->username }}</td>
-                        <td>{{ ucfirst($user->role) }}</td>
                         <td>
-                            <button class="btn btn-outline" onclick="openEditModal('{{ $user->id }}', '{{ $user->username }}', '{{ $user->role }}')">Edit</button>
+                            <button class="btn btn-outline" onclick="openEditModal('{{ $user->id }}', '{{ $user->username }}')">Edit</button>
                             <form action="{{ route('dashboard.admin.destroy', $user->id) }}" method="POST" style="display:inline;">
                                 @csrf
                                 @method('DELETE')
@@ -87,15 +89,16 @@
             </div>
             <div class="form-group">
                 <label>Password</label>
-                <input type="password" name="password" class="form-control" required>
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="passwordTambah" class="form-control" required>
+                    <button type="button" class="toggle-password" onclick="togglePass('passwordTambah', this)">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Role</label>
-                <select name="role" class="form-control" required>
-                    <option value="tamu">Tamu</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
+
             <div class="modal-actions">
                 <button type="button" class="btn btn-outline" onclick="closeModal('modalTambah')">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan</button>
@@ -119,15 +122,16 @@
             </div>
             <div class="form-group">
                 <label>Password <small>(Kosongkan jika tidak diubah)</small></label>
-                <input type="password" name="password" class="form-control">
+                <div class="password-wrapper">
+                    <input type="password" name="password" id="passwordEdit" class="form-control">
+                    <button type="button" class="toggle-password" onclick="togglePass('passwordEdit', this)">
+                        <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
+                        </svg>
+                    </button>
+                </div>
             </div>
-            <div class="form-group">
-                <label>Role</label>
-                <select name="role" id="editRole" class="form-control" required>
-                    <option value="tamu">Tamu</option>
-                    <option value="admin">Admin</option>
-                </select>
-            </div>
+
             <div class="modal-actions">
                 <button type="button" class="btn btn-outline" onclick="closeModal('modalEdit')">Batal</button>
                 <button type="submit" class="btn btn-primary">Simpan Perubahan</button>
@@ -141,9 +145,8 @@ function openModal(id) {
     document.getElementById(id).classList.add('open'); 
 }
 
-function openEditModal(id, username, role) {
+function openEditModal(id, username) {
     document.getElementById('editUsername').value = username;
-    document.getElementById('editRole').value = role;
     document.getElementById('formEdit').action = `/dashboard/data-admin/${id}`;
     openModal('modalEdit');
 }
@@ -155,6 +158,18 @@ function closeModal(id) {
 document.querySelectorAll('.modal-backdrop').forEach(el => {
     el.addEventListener('click', e => { if (e.target === el) el.classList.remove('open'); });
 });
+
+function togglePass(inputId, btn) {
+    const input = document.getElementById(inputId);
+    const svg = btn.querySelector('svg');
+    if (input.type === 'password') {
+        input.type = 'text';
+        svg.innerHTML = '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line>';
+    } else {
+        input.type = 'password';
+        svg.innerHTML = '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+    }
+}
 
 const sidebar = document.getElementById('sidebar');
 const overlay = document.getElementById('overlay');

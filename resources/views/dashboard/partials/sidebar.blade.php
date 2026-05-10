@@ -1,5 +1,7 @@
 <aside class="sidebar" id="sidebar">
-  <div class="sidebar-logo" style="font-weight: bold; font-size: 1.35rem;">GROOM<br>&amp;<br>BRIDE</div>
+  <div class="sidebar-logo" style="font-weight: bold; font-size: 1.35rem; text-transform: uppercase;">
+    {{ $landing->groom_name ?? 'GROOM' }}<br>&amp;<br>{{ $landing->bride_name ?? 'BRIDE' }}
+  </div>
   <nav class="sidebar-nav">
     <a class="nav-item {{ request()->routeIs('dashboard.index') ? 'active' : '' }}" href="{{ route('dashboard.index') }}">
       <svg width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">

@@ -21,6 +21,17 @@ class LandingController extends Controller
 
         // 1. Data Teks & Tanggal
         $landing->template        = $request->input('template', 'bohemian');
+
+        // 2. Warna Custom (default sesuai template jika tidak diisi)
+        $defaultColors = $landing->template === 'modern'
+            ? ['#1E2A3A', '#8FA3B1', '#4A6572', '#F4F6F7']
+            : ['#321E04', '#C9A96E', '#7A5C3A', '#f5f1eb'];
+
+        $landing->color_primary = $request->input('color_primary', $defaultColors[0]);
+        $landing->color_accent  = $request->input('color_accent',  $defaultColors[1]);
+        $landing->color_mid     = $request->input('color_mid',     $defaultColors[2]);
+        $landing->color_bg      = $request->input('color_bg',      $defaultColors[3]);
+
         $landing->groom_name      = $request->input('groom_name');
         $landing->bride_name      = $request->input('bride_name');
         $landing->wedding_date    = $request->input('wedding_date');
@@ -49,6 +60,7 @@ class LandingController extends Controller
         $kegiatan = [];
         foreach ($names as $i => $name) {
             if (trim($name) === '') continue;
+            if (count($kegiatan) >= 8) break;
             $kegiatan[] = [
                 'name'   => $name,
                 'time'   => $times[$i] ?? '',
@@ -67,25 +79,7 @@ class LandingController extends Controller
         $landing->show_guest_name = $request->has('show_guest_name');
         $landing->is_private      = $request->has('is_private');
 
-        // 8. Upload Thumbnail Custom
-        if ($request->hasFile('custom_thumbnail')) {
-            if ($landing->custom_thumbnail && Storage::exists('public/' . $landing->custom_thumbnail)) {
-                Storage::delete('public/' . $landing->custom_thumbnail);
-            }
-            $landing->custom_thumbnail = $request->file('custom_thumbnail')
-                ->store('landing/thumbnails', 'public');
-        }
-
-        // 10. Upload HTML Custom
-        if ($request->hasFile('custom_html')) {
-            if ($landing->custom_html && Storage::exists('public/' . $landing->custom_html)) {
-                Storage::delete('public/' . $landing->custom_html);
-            }
-            $landing->custom_html = $request->file('custom_html')
-                ->store('landing/html', 'public');
-        }
-
-        // 11. Galeri dari path yang sudah diupload
+        // 9. Galeri dari path yang sudah diupload
         $galleryPaths = $request->input('gallery_paths', []);
         $gallerySlots = $request->input('gallery_slots', []);
 

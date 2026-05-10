@@ -7,19 +7,22 @@ class Landing extends Model
 {
     protected $table = 'landings';
     protected $fillable = [
-    'template',
-    'hero_image',
-    'custom_html',
-    'show_animation',
-    'play_music',
-    'show_guest_name',
-    'is_private',
-    'groom_name',
-    'bride_name',
-    'wedding_date',
-    'lokasi_wedding', 
-    'kota',
-    'map_iframe'
-
-];
+        'template',
+        'hero_image',
+        'custom_html',
+        'show_animation',
+        'play_music',
+        'show_guest_name',
+        'is_private',
+        'groom_name',
+        'bride_name',
+        'wedding_date',
+        'lokasi_wedding',
+        'kota',
+        'map_iframe',
+        'color_primary',
+        'color_accent',
+        'color_mid',
+        'color_bg',
+    ];
 }

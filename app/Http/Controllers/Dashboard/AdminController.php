@@ -13,25 +13,19 @@ class AdminController extends Controller
 {
     public function index()
     {
-        $users = User::all();
+        $users = User::where('role', 'admin')->get();
         $landing = Landing::first() ?? new Landing();
         return view('dashboard.dataAdmin', compact('users', 'landing'));
     }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'username' => 'required|unique:users,username',
-            'password' => 'required|min:6',
-            'role'     => 'required|in:admin,tamu'
-        ]);
-
         User::create([
             'name'     => $request->username, // Menyamakan name dengan username
             'email'    => $request->username . '@example.com', // Email dummy agar valid
             'username' => $request->username,
             'password' => Hash::make($request->password),
-            'role'     => $request->role,
+            'role'     => 'admin',
         ]);
 
         return redirect()->back()->with('success', 'Akun berhasil ditambahkan.');
@@ -43,12 +37,11 @@ class AdminController extends Controller
         
         $request->validate([
             'username' => 'required|unique:users,username,' . $id,
-            'role'     => 'required|in:admin,tamu'
         ]);
 
         $data = [
             'username' => $request->username,
-            'role'     => $request->role,
+            'role'     => 'admin',
         ];
 
         if ($request->filled('password')) {
@@ -62,6 +55,17 @@ class AdminController extends Controller
 
     public function destroy($id)
     {
+        // 1. Cegah hapus diri sendiri
+        if (auth()->id() == $id) {
+            return redirect()->back()->with('error', 'Anda tidak bisa menghapus akun yang sedang Anda gunakan.');
+        }
+
+        // 2. Cegah hapus admin terakhir
+        $adminCount = User::where('role', 'admin')->count();
+        if ($adminCount <= 1) {
+            return redirect()->back()->with('error', 'Tidak dapat menghapus admin terakhir. Minimal harus ada satu akun admin di sistem.');
+        }
+
         User::findOrFail($id)->delete();
         return redirect()->back()->with('success', 'Akun berhasil dihapus.');
     }

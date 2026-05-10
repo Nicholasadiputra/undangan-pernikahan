@@ -39,6 +39,15 @@
             }
         }
     </script>
+
+    <style>
+      :root {
+        --c-primary: {{ $landing->color_primary ?? '#321E04' }};
+        --c-accent:  {{ $landing->color_accent  ?? '#C9A96E' }};
+        --c-mid:     {{ $landing->color_mid      ?? '#7A5C3A' }};
+        --c-bg:      {{ $landing->color_bg       ?? '#f5f1eb' }};
+      }
+    </style>
     <link rel="stylesheet" href="{{ asset('css/utama.css') }}">
     <script src="{{ asset('js/utama.js') }}" defer></script>
 
@@ -61,13 +70,13 @@
     {{-- ════ HEADER ════ --}}
     <header class="fixed top-0 left-1/2 -translate-x-1/2 w-full px-[70px] py-[10px] flex justify-between items-center z-[1000]"
         style="backdrop-filter: blur(12px); background: rgba(255,255,255,0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
-        <div class="font-['Grey_Qo'] text-[50px] font-extrabold text-[#321E04]"
+        <div class="font-['Grey_Qo'] text-[50px] font-extrabold text-[var(--c-primary)]"
             style="text-shadow: 2px 2px 5px rgba(0,0,0,0.2);">N</div>
         <nav class="flex gap-[70px]">
-            <a href="#home"     class="no-underline text-[20px] text-[#321E04] font-['Cormorant_Garamond']">Home</a>
-            <a href="#mempelai" class="no-underline text-[20px] text-[#321E04] font-['Cormorant_Garamond']">Mempelai</a>
-            <a href="#acara"    class="no-underline text-[20px] text-[#321E04] font-['Cormorant_Garamond']">Acara</a>
-            <a href="#galeri"   class="no-underline text-[20px] text-[#321E04] font-['Cormorant_Garamond']">Galeri</a>
+            <a href="#home"     class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond']">Home</a>
+            <a href="#mempelai" class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond']">Mempelai</a>
+            <a href="#acara"    class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond']">Acara</a>
+            <a href="#galeri"   class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond']">Galeri</a>
         </nav>
     </header>
 
@@ -93,7 +102,7 @@
     </section>
 
     {{-- ════ MEMPELAI ════ --}}
-    <section id="mempelai" class="font-jost flex items-center gap-[60px] px-[80px] pt-[80px] pb-[120px] bg-[#f5f1eb]">
+    <section id="mempelai" class="font-jost flex items-center gap-[60px] px-[80px] pt-[80px] pb-[120px] bg-[var(--c-bg)]">
         <div class="relative w-[300px] h-[460px] flex-shrink-0">
 
             <img src="{{ isset($galleryBySlot['story1']) ? Storage::url($galleryBySlot['story1']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
@@ -104,24 +113,24 @@
                 class="absolute object-cover border-[3px] border-white w-[206px] h-[206px] top-[300px] left-[80px] z-[3]">
         </div>
         <div class="ml-[80px]">
-            <p class="text-[15px] font-semibold tracking-[0.15em] text-[#321E04] uppercase mb-[20px]">
+            <p class="text-[15px] font-semibold tracking-[0.15em] text-[var(--c-primary)] uppercase mb-[20px]">
                 THE BEGINNING OF OUR FOREVER
             </p>
-            <h2 class="font-gilda text-[#321E04] text-[32px] font-normal uppercase mb-[20px]">
+            <h2 class="font-gilda text-[var(--c-primary)] text-[32px] font-normal uppercase mb-[20px]">
                 CELEBRATING LOVE, <br>COMMITMENT, AND A BEAUTIFUL <br>BEGINNING
             </h2>
-            <p class="text-[15px] font-light tracking-[0.10em] text-[#321E04] mb-[30px]">
+            <p class="text-[15px] font-light tracking-[0.10em] text-[var(--c-primary)] mb-[30px]">
                 With love and joy, we invite you to celebrate this special moment with us.
             </p>
             <hr class="border-none h-[1px] bg-[#C9A96E] my-[20px]">
-            <p class="font-niconne text-[#321E04] text-[35px] tracking-[0.15em]">
+            <p class="font-niconne text-[var(--c-primary)] text-[35px] tracking-[0.15em]">
                 {{ $landing->groom_name ?? 'Groom' }} & {{ $landing->bride_name ?? 'Bride' }}
             </p>
         </div>
     </section>
 
     {{-- ════ SAVE THE DATE ════ --}}
-    <section id="acara" class="flex justify-between bg-[#321E04] items-stretch gap-[60px]">
+    <section id="acara" class="flex justify-between bg-[var(--c-primary)] items-stretch gap-[60px]">
         <div class="relative w-1/2 p-[80px] flex-shrink-0">
             <div class="absolute top-[150px] bottom-[150px] left-[80px] right-[80px] z-[3]">
                 <div class="corner-tl"></div><div class="corner-tr"></div>
@@ -129,10 +138,10 @@
             </div>
             <div class="absolute top-[80px] left-[80px] right-[80px] bottom-[80px] p-[40px] z-[2] flex flex-col justify-center text-justify">
                 <h2 class="font-gilda text-white text-[50px] tracking-[0.1em]">SAVE</h2>
-                <p class="font-niconne text-[#C9A96E] text-[40px] my-[10px]">The</p>
+                <p class="font-niconne text-[var(--c-accent)] text-[40px] my-[10px]">The</p>
                 <h2 class="font-gilda text-white text-[50px] tracking-[0.1em]">DATE</h2>
                 <div class="flex flex-col my-[20px]">
-                    <span class="w-full h-[1px] mb-[10px]" style="background: linear-gradient(to right, #C9A96E, #7A5C3A);"></span>
+                    <span class="w-full h-[1px] mb-[10px]" style="background: linear-gradient(to right, var(--c-accent), var(--c-mid));"></span>
                     @if($landing->wedding_date)
                         @php
                             $date = \Carbon\Carbon::parse($landing->wedding_date);
@@ -148,7 +157,7 @@
                     @else
                         <div class="font-[Cormorant_Garamond] text-white text-[25px]">Tanggal Belum Ditentukan</div>
                     @endif
-                    <span class="w-full h-[1px] mt-[10px]" style="background: linear-gradient(to right, #C9A96E, #7A5C3A);"></span>
+                    <span class="w-full h-[1px] mt-[10px]" style="background: linear-gradient(to right, var(--c-accent), var(--c-mid));"></span>
                 </div>
                 <p class="font-jost font-light text-white text-[15px] tracking-[0.1em] mt-[20px]">
                     With hearts filled with happiness, we invite you to remember this special date and celebrate with us.
@@ -171,7 +180,7 @@
                     alt="Venue" class="w-full h-full object-cover block"/>
             </div>
             <div class="flex-1 flex flex-col justify-center pl-[20px]">
-                <h2 class="font-gilda text-[#321E04] text-[50px] font-bold tracking-[0.10em] leading-none mb-[20px]">THE VENUE</h2>
+                <h2 class="font-gilda text-[var(--c-primary)] text-[50px] font-bold tracking-[0.10em] leading-none mb-[20px]">THE VENUE</h2>
                 <p class="font-jost font-light text-black text-[15px] tracking-[0.10em] leading-[1.75] mb-[28px]">
                     We are delighted to celebrate our special day at a place filled with beauty and warmth.
                 </p>
@@ -183,24 +192,24 @@
                     {{ $landing->lokasi_wedding ?? 'Lokasi Belum Ditentukan' }}<br>
                     {{ $landing->kota ?? '' }}
                 </p>
-                <p class="font-niconne text-[#321E04] text-[30px] font-normal">Save Your Seat</p>
+                <p class="font-niconne text-[var(--c-primary)] text-[30px] font-normal">Save Your Seat</p>
             </div>
         </div>
         @if(!empty($landing->map_iframe))
         <div class="w-[90%] mx-auto overflow-hidden rounded-[6px] mb-[20px] leading-[0] [&>iframe]:w-full [&>iframe]:h-[376px] [&>iframe]:block"
-            style="border: 5px solid #321E04;">
+            style="border: 5px solid var(--c-primary);">
             {!! $landing->map_iframe !!}
         </div>
         <a href="https://maps.google.com/?q={{ urlencode(($landing->lokasi_wedding ?? '') . ' ' . ($landing->kota ?? '')) }}"
             target="_blank" rel="noopener noreferrer"
-            class="block text-center font-jost font-semibold text-[#321E04] text-[15px] tracking-[0.15em] uppercase no-underline pt-[12px] pb-[4px] hover:underline underline-offset-4">
+            class="block text-center font-jost font-semibold text-[var(--c-primary)] text-[15px] tracking-[0.15em] uppercase no-underline pt-[12px] pb-[4px] hover:underline underline-offset-4">
             Open on Google Maps
         </a>
         @endif
     </section>
 
     {{-- ════ COUNTDOWN ════ --}}
-    <section class="bg-[#321E04] px-[40px] pt-[60px] pb-[70px] text-center">
+    <section class="bg-[var(--c-primary)] px-[40px] pt-[60px] pb-[70px] text-center">
         <p class="font-niconne text-white text-[60px] font-normal tracking-[0.05em] mb-[40px] leading-none">
             Until our wedding day
         </p>
@@ -209,17 +218,17 @@
                 <span class="font-gilda text-white text-[80px] font-normal tracking-[0.05em] leading-none" id="cd-days">000</span>
                 <span class="font-gilda text-white text-[25px] font-normal tracking-[0.10em] mt-[10px] leading-none">Days</span>
             </div>
-            <span class="font-gilda text-[#C9A96E] text-[80px] font-normal leading-none px-[4px] self-start">:</span>
+            <span class="font-gilda text-[var(--c-accent)] text-[80px] font-normal leading-none px-[4px] self-start">:</span>
             <div class="flex flex-col items-center min-w-[140px]">
                 <span class="font-gilda text-white text-[80px] font-normal tracking-[0.05em] leading-none" id="cd-hours">00</span>
                 <span class="font-gilda text-white text-[25px] font-normal tracking-[0.10em] mt-[10px] leading-none">Hours</span>
             </div>
-            <span class="font-gilda text-[#C9A96E] text-[80px] font-normal leading-none px-[4px] self-start">:</span>
+            <span class="font-gilda text-[var(--c-accent)] text-[80px] font-normal leading-none px-[4px] self-start">:</span>
             <div class="flex flex-col items-center min-w-[140px]">
                 <span class="font-gilda text-white text-[80px] font-normal tracking-[0.05em] leading-none" id="cd-minutes">00</span>
                 <span class="font-gilda text-white text-[25px] font-normal tracking-[0.10em] mt-[10px] leading-none">Minutes</span>
             </div>
-            <span class="font-gilda text-[#C9A96E] text-[80px] font-normal leading-none px-[4px] self-start">:</span>
+            <span class="font-gilda text-[var(--c-accent)] text-[80px] font-normal leading-none px-[4px] self-start">:</span>
             <div class="flex flex-col items-center min-w-[140px]">
                 <span class="font-gilda text-white text-[80px] font-normal tracking-[0.05em] leading-none" id="cd-seconds">00</span>
                 <span class="font-gilda text-white text-[25px] font-normal tracking-[0.10em] mt-[10px] leading-none">Seconds</span>
@@ -228,7 +237,7 @@
     </section>
 
     {{-- ════ TIMELINE (dari kegiatan database) ════ --}}
-    <section class="w-full bg-[#f5f1eb] overflow-hidden leading-none">
+    <section class="w-full bg-[var(--c-bg)] overflow-hidden leading-none">
         <svg id="tl-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"
             width="100%" preserveAspectRatio="xMidYMid meet" class="block">
             <path id="tl-path"
@@ -346,22 +355,22 @@
     <section class="bg-[#f5f3ee] min-h-screen">
         <div class="flex flex-row items-start gap-16 max-w-[860px] w-full mx-auto px-[60px] py-[80px]">
             <div class="flex flex-col flex-1">
-                <h1 class="font-gilda font-normal text-[#321E04] text-[50px] tracking-10 mb-[30px] leading-tight">
+                <h1 class="font-gilda font-normal text-[var(--c-primary)] text-[50px] tracking-10 mb-[30px] leading-tight">
                     STORY OF US
                 </h1>
                 <div class="mb-[30px]">
-                    <h2 class="font-jost font-normal uppercase text-[#321E04] text-[20px] tracking-15 text-center mb-[30px]">
+                    <h2 class="font-jost font-normal uppercase text-[var(--c-primary)] text-[20px] tracking-15 text-center mb-[30px]">
                         HOW WE MET
                     </h2>
-                    <p class="font-jost font-light text-[#321E04] text-[15px] tracking-10 leading-relaxed text-center">
+                    <p class="font-jost font-light text-[var(--c-primary)] text-[15px] tracking-10 leading-relaxed text-center">
                         {{ $landing->cerita_bertemu ?? 'Our story began in the most unexpected way — through a simple introduction during our university days.' }}
                     </p>
                 </div>
                 <div>
-                    <h2 class="font-jost font-normal uppercase text-[#321E04] text-[20px] tracking-15 text-center mb-[30px]">
+                    <h2 class="font-jost font-normal uppercase text-[var(--c-primary)] text-[20px] tracking-15 text-center mb-[30px]">
                         HOW WE PROPOSAL
                     </h2>
-                    <p class="font-jost font-light text-[#321E04] text-[15px] tracking-10 leading-relaxed text-center">
+                    <p class="font-jost font-light text-[var(--c-primary)] text-[15px] tracking-10 leading-relaxed text-center">
                         {{ $landing->cerita_melamar ?? 'As time passed, it became clear that our journey together was meant to last a lifetime.' }}
                     </p>
                 </div>
@@ -380,7 +389,7 @@
     </section>
 
     {{-- ════ GALERI ════ --}}
-    <section id="galeri" class="bg-[#321E04] flex flex-col items-center px-[60px] py-[60px]">
+    <section id="galeri" class="bg-[var(--c-primary)] flex flex-col items-center px-[60px] py-[60px]">
         <h1 class="font-niconne text-white text-[60px] font-normal tracking-5 mb-[50px]">Gallery</h1>
         <div class="flex flex-row items-end justify-center gap-[30px] w-full max-w-[900px]">
 
@@ -425,9 +434,9 @@
     </section>
 
     {{-- ════ SCROLL GALLERY ════ --}}
-    <div class="relative w-full" style="background:#321E04;">
+    <div class="relative w-full" style="background:var(--c-primary);">
         <div class="absolute z-10"
-            style="width:100%; height:18%; background:#321E04; border-radius:0 0 50% 50%; top:0;"></div>
+            style="width:100%; height:18%; background:var(--c-primary); border-radius:0 0 50% 50%; top:0;"></div>
         <div class="relative z-0 w-full overflow-x-auto overflow-y-hidden py-8 px-6">
             <div class="flex gap-4" style="width: max-content;">
                 @php $galeriItems = collect($gallery)->where('slot', 'galeri')->values(); @endphp
@@ -441,35 +450,35 @@
             </div>
         </div>
         <div class="absolute z-10"
-            style="width:100%; height:18%; background:#321E04; border-radius:50% 50% 0 0; bottom:0;"></div>
+            style="width:100%; height:18%; background:var(--c-primary); border-radius:50% 50% 0 0; bottom:0;"></div>
     </div>
 
     {{-- ════ RSVP ════ --}}
     <section class="bg-[#F8F8F8] flex flex-col items-center px-[60px] py-[60px]">
-        <p class="font-jost font-semibold text-[#321E04] text-[20px] tracking-[0.15em] uppercase mb-3">
+        <p class="font-jost font-semibold text-[var(--c-primary)] text-[20px] tracking-[0.15em] uppercase mb-3">
             Confirmation of Attendance
         </p>
-        <h1 class="font-greatvibes font-normal text-[#321E04] text-[70px] tracking-[0.20em] mb-10">
+        <h1 class="font-greatvibes font-normal text-[var(--c-primary)] text-[70px] tracking-[0.20em] mb-10">
             Will you join us?
         </h1>
         <form id="rsvp-form" class="w-full max-w-[640px] flex flex-col gap-6">
             <div class="flex flex-col gap-2">
-                <label class="font-jost font-semibold text-[#321E04] text-[18px] tracking-[0.25em] uppercase">Your Name</label>
+                <label class="font-jost font-semibold text-[var(--c-primary)] text-[18px] tracking-[0.25em] uppercase">Your Name</label>
                 <div style="background: linear-gradient(135deg, #8F7D65, #635336); padding: 1px; border-radius: 10px;">
                     <input type="text" name="name" placeholder="Enter your name" required
-                        class="w-full px-5 py-4 text-[#321E04] placeholder-[#9e8e7a] outline-none"
+                        class="w-full px-5 py-4 text-[var(--c-primary)] placeholder-[#9e8e7a] outline-none"
                         style="font-family:'Roboto',sans-serif;background:#ffffff;border-radius:9px;border:none;width:100%;letter-spacing:0.1em;">
                 </div>
             </div>
             <div class="flex flex-col gap-2">
-                <label class="font-jost font-semibold text-[#321E04] text-[18px] tracking-[0.25em] uppercase">Confirm Your Attendance</label>
+                <label class="font-jost font-semibold text-[var(--c-primary)] text-[18px] tracking-[0.25em] uppercase">Confirm Your Attendance</label>
                 <div class="flex gap-4">
                     <button type="button" onclick="selectAttendance('present', this)"
-                        class="attendance-btn flex-1 py-4 font-jost font-normal text-[#321E04] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-green-500">
+                        class="attendance-btn flex-1 py-4 font-jost font-normal text-[var(--c-primary)] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-green-500">
                         Present
                     </button>
                     <button type="button" onclick="selectAttendance('not_present', this)"
-                        class="attendance-btn flex-1 py-4 font-jost font-normal text-[#321E04] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-red-500">
+                        class="attendance-btn flex-1 py-4 font-jost font-normal text-[var(--c-primary)] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-red-500">
                         Not Present
                     </button>
                 </div>
@@ -478,31 +487,31 @@
             <input type="hidden" name="category" id="category-val">
             <input type="hidden" name="pax" id="pax-val">
             <div class="flex flex-col gap-2">
-                <label class="font-jost font-semibold text-[#321E04] text-[18px] tracking-[0.25em] uppercase">Category</label>
+                <label class="font-jost font-semibold text-[var(--c-primary)] text-[18px] tracking-[0.25em] uppercase">Category</label>
                 <div class="flex gap-4">
                     <button type="button" onclick="selectCategory('family', this)"
-                        class="category-btn flex-1 py-4 font-jost font-normal text-[#321E04] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-[#8F7D65]/20">
+                        class="category-btn flex-1 py-4 font-jost font-normal text-[var(--c-primary)] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-[#8F7D65]/20">
                         Family (4 Pax)
                     </button>
                     <button type="button" onclick="selectCategory('friends', this)"
-                        class="category-btn flex-1 py-4 font-jost font-normal text-[#321E04] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-[#8F7D65]/20">
+                        class="category-btn flex-1 py-4 font-jost font-normal text-[var(--c-primary)] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-[#8F7D65]/20">
                         Friends (2 Pax)
                     </button>
                 </div>
-                <p id="pax-display" class="font-jost text-[14px] text-[#321E04] mt-1 hidden">
+                <p id="pax-display" class="font-jost text-[14px] text-[var(--c-primary)] mt-1 hidden">
                     Quota: <span id="pax-count" class="font-bold">-</span> Pax
                 </p>
             </div>
             <div class="flex flex-col gap-2">
-                <label class="font-jost font-semibold text-[#321E04] text-[18px] tracking-[0.25em] uppercase">Message</label>
+                <label class="font-jost font-semibold text-[var(--c-primary)] text-[18px] tracking-[0.25em] uppercase">Message</label>
                 <div style="background: linear-gradient(135deg, #8F7D65, #635336); padding: 1px; border-radius: 10px;">
                     <textarea name="message" placeholder="Enter your messages" rows="3"
-                        class="w-full px-5 py-4 text-[#321E04] placeholder-[#9e8e7a] outline-none resize-none"
+                        class="w-full px-5 py-4 text-[var(--c-primary)] placeholder-[#9e8e7a] outline-none resize-none"
                         style="font-family:'Roboto',sans-serif;background:#ffffff;border-radius:9px;border:none;width:100%;display:block;letter-spacing:0.1em;"></textarea>
                 </div>
             </div>
             <button type="submit"
-                class="w-full py-5 font-jost font-normal text-[#321E04] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-[#321E04] hover:text-white hover:border-[#321E04]">
+                class="w-full py-5 font-jost font-normal text-[var(--c-primary)] text-[14px] tracking-[0.15em] uppercase rounded-md border border-[#8F7D65] bg-transparent transition-all duration-300 hover:bg-[var(--c-primary)] hover:text-white hover:border-[var(--c-primary)]">
                 Send Confirmation
             </button>
             <p id="form-status" class="text-center text-sm font-jost hidden"></p>
@@ -515,19 +524,19 @@
             <div class="relative flex-shrink-0" style="width:520px;">
                 <img src="{{ isset($galleryBySlot['penutup']) ? Storage::url($galleryBySlot['penutup']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
                     alt="Couple" class="w-full h-full object-cover block"
-                    style="box-shadow: 25px 25px 0px 0px #321E04;">
+                    style="box-shadow: 25px 25px 0px 0px var(--c-primary);">
             </div>
             <div class="flex flex-col justify-center px-14"
                 style="background:#D9CFC7;gap:30px;height:450px;flex:1;">
                 <div class="flex items-center gap-4">
-                    <p class="font-jost font-semibold uppercase text-[#321E04]"
+                    <p class="font-jost font-semibold uppercase text-[var(--c-primary)]"
                         style="font-size:15px;letter-spacing:0.25em;white-space:nowrap;">Thank You</p>
                     <div style="width:80px;height:1px;background:#C9A96E;flex-shrink:0;"></div>
                 </div>
-                <h2 class="font-gilda font-normal uppercase text-[#321E04]" style="font-size:36px;line-height:1.2;">
+                <h2 class="font-gilda font-normal uppercase text-[var(--c-primary)]" style="font-size:36px;line-height:1.2;">
                     Thank you for being part of our special day.
                 </h2>
-                <p class="font-jost font-normal text-[#321E04]" style="font-size:15px;letter-spacing:0.10em;line-height:1.8;">
+                <p class="font-jost font-normal text-[var(--c-primary)]" style="font-size:15px;letter-spacing:0.10em;line-height:1.8;">
                     Thank you for your love, prayers, and warm wishes. Your presence means the world to us as we celebrate this beautiful beginning together.
                 </p>
             </div>
@@ -535,7 +544,7 @@
     </section>
 
     {{-- ════ FOOTER ════ --}}
-    <footer class="w-full px-16 py-10" style="background:#321E04;">
+    <footer class="w-full px-16 py-10" style="background:var(--c-primary);">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-6">
                 <span class="font-grey-qo text-white pr-4" style="font-size:48px;line-height:1;font-weight:600;">N</span>
