@@ -10,8 +10,12 @@ use Illuminate\Support\Facades\Hash;
 class LoginController extends Controller
 {
     // Tamu langsung masuk tanpa password
-    public function tamuMasuk()
+    public function tamuMasuk(Request $request)
     {
+        if ($request->filled('slug')) {
+            session(['guest_slug' => $request->input('slug')]);
+        }
+
         session(['login' => true, 'role' => 'tamu']);
         return redirect()->route('undangan.utama');
     }

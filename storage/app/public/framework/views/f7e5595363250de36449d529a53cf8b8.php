@@ -5,9 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
   <title>Edit Landing Page — <?php echo e($landing->groom_name ?? "Groom"); ?> &amp; <?php echo e($landing->bride_name ?? "Bride"); ?></title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="<?php echo e(asset('css/editLanding.css')); ?>"/> 
+  <link rel="stylesheet" href="<?php echo e(asset('css/editLanding.css')); ?>"/>
   <link rel="stylesheet" href="<?php echo e(asset('css/dataAdmin.css')); ?>"/>
   <script src="<?php echo e(asset('js/editLanding.js')); ?>" defer></script>
   <link rel="icon" type="image/jpg" href="<?php echo e(asset('favicon.jpg')); ?>">
@@ -113,7 +113,7 @@
           <div>
             <label class="lbl-dark">Acara</label>
             <div id="kegiatan-list" style="display:flex;flex-direction:column;gap:8px;margin-top:4px;"></div>
-            <p style="font-size:10px;color:#9A7B5C;margin-top:8px;">Isi kegiatan, baris berikutnya otomatis muncul</p>
+            <p style="font-size:10px;color:#9A7B5C;margin-top:8px;">Isi minimal 1 dan maksimal 8 kegiatan. Baris berikutnya otomatis muncul.</p>
           </div>
 
           
@@ -125,7 +125,7 @@
             <div>
               <label class="lbl-dark">Palette Dress Code</label>
               <div id="palette-row" style="display:flex;flex-wrap:wrap;gap:8px;align-items:center;margin-top:4px;"></div>
-              <input type="color" id="globalColorPicker" class="hidden-color" onchange="commitColor(this.value)" />
+              <input type="color" id="globalColorPicker" style="opacity: 0; width: 10px; height: 10px; position: absolute; bottom: 0; z-index: -1;" oninput="commitColor(this.value)" onchange="commitColor(this.value)" />
             </div>
           </div>
         </div>
@@ -191,37 +191,85 @@
           </div>
         </div>
 
-        <div class="divider-label">Atau</div>
+        <div style="margin-top:20px;">
+          <label class="lbl-dark">Custom Warna</label>
+          <p style="font-size:10px;color:#9A7B5C;margin-bottom:12px;margin-top:2px;">Kustomisasi warna tema undangan Anda. Klik reset untuk kembali ke warna default template.</p>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;">
 
-        <div>
-          <label class="lbl-dark">Upload Custom</label>
-          <div class="grid grid-cols-2 gap-4" style="margin-top:8px;">
-            <label class="upload-box cursor-pointer">
-              <input type="file" name="custom_thumbnail" accept="image/*" class="hidden" onchange="handleUploadLabel(this,'thumb-label')" />
-              <svg style="width:28px;height:28px;color:#9A7B5C;" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                <rect x="3" y="3" width="18" height="18" rx="2"/>
-                <circle cx="8.5" cy="8.5" r="1.5"/>
-                <polyline points="21 15 16 10 5 21"/>
-              </svg>
-              <span id="thumb-label" style="font-size:12px;font-weight:500;color:#3D2B1A;">Upload Thumbnail</span>
-              <span style="font-size:10px;color:#9A7B5C;">JPG, PNG, SVG — Max 2MB</span>
-            </label>
-            <label class="upload-box cursor-pointer">
-              <input type="file" name="custom_html" accept=".html" class="hidden" onchange="handleUploadLabel(this,'html-label')" />
-              <svg style="width:28px;height:28px;color:#9A7B5C;" fill="none" stroke="currentColor" stroke-width="1.8" viewBox="0 0 24 24">
-                <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
-                <polyline points="14 2 14 8 20 8"/>
-                <line x1="16" y1="13" x2="8" y2="13"/>
-                <line x1="16" y1="17" x2="8" y2="17"/>
-                <polyline points="10 9 9 9 8 9"/>
-              </svg>
-              <span id="html-label" style="font-size:12px;font-weight:500;color:#3D2B1A;">Upload file HTML</span>
-              <span style="font-size:10px;color:#9A7B5C;">Hanya HTML — Max 2MB</span>
-            </label>
+            
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:11px;font-weight:600;color:#5C4A3A;letter-spacing:.05em;text-transform:uppercase;">Primary</label>
+              <p style="font-size:9px;color:#9A7B5C;margin:0;">Judul, nav, footer, border</p>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                <div id="preview_color_primary" style="width:28px;height:28px;border-radius:6px;border:1px solid #ddd;background:<?php echo e($landing->color_primary ?? '#321E04'); ?>;flex-shrink:0;"></div>
+                <input type="text" id="txt_color_primary" name="color_primary" value="<?php echo e($landing->color_primary ?? '#321E04'); ?>"
+                  maxlength="7" oninput="syncColorInput('primary',this.value)"
+                  style="flex:1;padding:5px 8px;border:1px solid #E8D8C4;border-radius:6px;font-size:12px;font-family:monospace;background:#FDF9F5;">
+                <input type="color" id="pick_color_primary" value="<?php echo e($landing->color_primary ?? '#321E04'); ?>"
+                  oninput="syncColorPicker('primary',this.value)"
+                  style="width:28px;height:28px;border:none;background:none;padding:0;cursor:pointer;border-radius:4px;">
+              </div>
+            </div>
+
+            
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:11px;font-weight:600;color:#5C4A3A;letter-spacing:.05em;text-transform:uppercase;">Accent</label>
+              <p style="font-size:9px;color:#9A7B5C;margin:0;">Garis dekorasi, separator, tanggal</p>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                <div id="preview_color_accent" style="width:28px;height:28px;border-radius:6px;border:1px solid #ddd;background:<?php echo e($landing->color_accent ?? '#C9A96E'); ?>;flex-shrink:0;"></div>
+                <input type="text" id="txt_color_accent" name="color_accent" value="<?php echo e($landing->color_accent ?? '#C9A96E'); ?>"
+                  maxlength="7" oninput="syncColorInput('accent',this.value)"
+                  style="flex:1;padding:5px 8px;border:1px solid #E8D8C4;border-radius:6px;font-size:12px;font-family:monospace;background:#FDF9F5;">
+                <input type="color" id="pick_color_accent" value="<?php echo e($landing->color_accent ?? '#C9A96E'); ?>"
+                  oninput="syncColorPicker('accent',this.value)"
+                  style="width:28px;height:28px;border:none;background:none;padding:0;cursor:pointer;border-radius:4px;">
+              </div>
+            </div>
+
+            
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:11px;font-weight:600;color:#5C4A3A;letter-spacing:.05em;text-transform:uppercase;">Mid</label>
+              <p style="font-size:9px;color:#9A7B5C;margin:0;">Teks sekunder, elemen halus</p>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                <div id="preview_color_mid" style="width:28px;height:28px;border-radius:6px;border:1px solid #ddd;background:<?php echo e($landing->color_mid ?? '#7A5C3A'); ?>;flex-shrink:0;"></div>
+                <input type="text" id="txt_color_mid" name="color_mid" value="<?php echo e($landing->color_mid ?? '#7A5C3A'); ?>"
+                  maxlength="7" oninput="syncColorInput('mid',this.value)"
+                  style="flex:1;padding:5px 8px;border:1px solid #E8D8C4;border-radius:6px;font-size:12px;font-family:monospace;background:#FDF9F5;">
+                <input type="color" id="pick_color_mid" value="<?php echo e($landing->color_mid ?? '#7A5C3A'); ?>"
+                  oninput="syncColorPicker('mid',this.value)"
+                  style="width:28px;height:28px;border:none;background:none;padding:0;cursor:pointer;border-radius:4px;">
+              </div>
+            </div>
+
+            
+            <div style="display:flex;flex-direction:column;gap:4px;">
+              <label style="font-size:11px;font-weight:600;color:#5C4A3A;letter-spacing:.05em;text-transform:uppercase;">Background</label>
+              <p style="font-size:9px;color:#9A7B5C;margin:0;">Warna latar section terang</p>
+              <div style="display:flex;align-items:center;gap:8px;margin-top:4px;">
+                <div id="preview_color_bg" style="width:28px;height:28px;border-radius:6px;border:1px solid #ddd;background:<?php echo e($landing->color_bg ?? '#f5f1eb'); ?>;flex-shrink:0;"></div>
+                <input type="text" id="txt_color_bg" name="color_bg" value="<?php echo e($landing->color_bg ?? '#f5f1eb'); ?>"
+                  maxlength="7" oninput="syncColorInput('bg',this.value)"
+                  style="flex:1;padding:5px 8px;border:1px solid #E8D8C4;border-radius:6px;font-size:12px;font-family:monospace;background:#FDF9F5;">
+                <input type="color" id="pick_color_bg" value="<?php echo e($landing->color_bg ?? '#f5f1eb'); ?>"
+                  oninput="syncColorPicker('bg',this.value)"
+                  style="width:28px;height:28px;border:none;background:none;padding:0;cursor:pointer;border-radius:4px;">
+              </div>
+            </div>
+
+          </div>
+
+          
+          <div style="margin-top:12px;text-align:right;">
+            <button type="button" onclick="resetColors()"
+              style="font-size:11px;color:#9A7B5C;background:none;border:1px solid #E8D8C4;border-radius:6px;padding:5px 14px;cursor:pointer;">
+              ↺ Reset ke Default Template
+            </button>
           </div>
         </div>
+
       </div>
     </div>
+
 
     <!--
     
@@ -308,8 +356,38 @@
 </main>
 
 <script>
-  // Load initial gallery from server
-  const initialGallery = JSON.parse(`<?php echo $landing->gallery ?? '[]'; ?>`);
+  // Load initial data from server
+  const initialGallery = JSON.parse(`<?php echo addcslashes($landing->gallery ?? '[]', '\`\\'); ?>`);
+  const initialKegiatan = JSON.parse(`<?php echo addcslashes($landing->kegiatan ?? 'null', '\`\\'); ?>`);
+  const initialPalette = JSON.parse(`<?php echo addcslashes($landing->palette_colors ?? 'null', '\`\\'); ?>`);
+
+  function generateLink() {
+    const name = document.getElementById('guestNameInput').value.trim();
+    if (!name) {
+      alert('Silakan masukkan nama tamu terlebih dahulu.');
+      return;
+    }
+    const baseUrl = "<?php echo e(url('/')); ?>";
+    const generatedUrl = baseUrl + "?to=" + encodeURIComponent(name);
+    
+    document.getElementById('generatedLinkUrl').value = generatedUrl;
+    document.getElementById('generatedLinkContainer').style.display = 'block';
+  }
+
+  function copyLink() {
+    const urlInput = document.getElementById('generatedLinkUrl');
+    urlInput.select();
+    document.execCommand('copy');
+    alert('Link berhasil disalin!');
+  }
+
+  function sendWhatsApp() {
+    const name = document.getElementById('guestNameInput').value.trim();
+    const url = document.getElementById('generatedLinkUrl').value;
+    const message = `Halo ${name},\n\nKami mengundang Anda untuk hadir di acara pernikahan kami.\n\nSilakan buka link berikut untuk melihat undangan selengkapnya:\n${url}\n\nTerima kasih,\n<?php echo e($landing->groom_name ?? 'Groom'); ?> & <?php echo e($landing->bride_name ?? 'Bride'); ?>`;
+    const waUrl = "https://wa.me/?text=" + encodeURIComponent(message);
+    window.open(waUrl, '_blank');
+  }
 </script>
 
 </body>

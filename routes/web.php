@@ -30,6 +30,7 @@ Route::post('/dashboard/login', [LoginController::class, 'adminLogin'])->name('d
 Route::prefix('dashboard')->middleware('admin')->group(function () {
     Route::get('/', [DashboardController::class, 'index'])->name('dashboard.index');
     Route::get('/data-tamu', [TamuController::class, 'page'])->name('dashboard.tamu');
+    Route::post('/data-tamu/import', [TamuController::class, 'import'])->name('dashboard.tamu.import');
     
     // Rute Data Admin CRUD
     Route::get('/data-admin', [AdminController::class, 'index'])->name('dashboard.admin');
@@ -53,4 +54,8 @@ Route::prefix('api')->middleware('admin')->group(function () {
     Route::put('/tamu/{id}', [TamuController::class, 'update']);
     Route::delete('/tamu/{id}', [TamuController::class, 'destroy']);
 });
+
+// Landing tamu berdasarkan slug nama
+Route::get('/{slug}', [UndanganController::class, 'show'])
+    ->where('slug', '^(?!dashboard|api|utama|proses-rsvp|logout|tamu-masuk|dashboard).*');
 

@@ -137,6 +137,11 @@ document.getElementById('rsvp-form').addEventListener('submit', async function(e
     formData.append('pax', pax); 
     formData.append('pesan', message);
 
+    const guestId = document.getElementById('guest-id')?.value;
+    if (guestId) {
+        formData.append('guest_id', guestId);
+    }
+
     // Cari bagian ini di utama.js
     try {
         const csrfToken = document.querySelector('meta[name="csrf-token"]').getAttribute('content');

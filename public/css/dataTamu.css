@@ -110,14 +110,50 @@ h1.page-title { font-family: 'Playfair Display', serif; font-size: 2rem; font-we
 .search-wrap svg { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text-muted); }
 
 .btn {
-    padding: 10px 20px; border-radius: 30px;
-    font-family: 'DM Sans', sans-serif; font-size: .88rem; font-weight: 600;
-    cursor: pointer; border: none; transition: opacity .2s, transform .15s;
+    padding: 10px 20px;
+    border-radius: 25px;
+    font-family: 'DM Sans', sans-serif;
+    font-size: .88rem;
+    font-weight: 600;
+    letter-spacing: .5px;
+    text-transform: uppercase;
+    cursor: pointer;
+    border: none;
+    transition: background .2s, transform .15s, box-shadow .2s;
     white-space: nowrap;
+    box-shadow: 0 2px 8px rgba(50,30,4,.15);
 }
-.btn:hover { opacity: .85; transform: translateY(-1px); }
-.btn-outline { background: var(--cream); color: var(--brown); border: 1.5px solid #d4c5a9; }
-.btn-primary { background: var(--brown); color: #fff; }
+.btn:hover { transform: translateY(-1px); box-shadow: 0 4px 12px rgba(50,30,4,.25); }
+
+.btn-outline {
+    background: var(--cream);
+    color: var(--brown);
+    border: 1.5px solid #d4c5a9;
+}
+.btn-outline:hover { background: #e8dcc4; }
+
+.btn-primary {
+    background: var(--brown);
+    color: #fff;
+}
+.btn-primary:hover { background: #4a2c08; }
+
+.btn-link {
+    background: var(--green);
+    color: #fff;
+    padding: 6px 12px;
+    font-size: .75rem;
+    border: 1.5px solid rgba(106, 175, 138, 0.3);
+    border-radius: 20px;
+    transition: background .2s, transform .15s, box-shadow .2s, border-color .2s;
+    box-shadow: 0 2px 6px rgba(106, 175, 138, 0.15);
+}
+.btn-link:hover {
+    background: #4a8f5e;
+    border-color: rgba(74, 143, 94, 0.5);
+    transform: translateY(-1px);
+    box-shadow: 0 4px 10px rgba(106, 175, 138, 0.25);
+}
 
 /* table */
 .table-wrap { overflow-x: auto; }
@@ -145,7 +181,15 @@ tbody tr:hover td { background: #fafafa; }
 .ucapan-text { color: var(--text-muted); font-size: .83rem; font-style: italic; }
 
 /* action icons */
-.actions { display: flex; gap: 8px; }
+.link-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.action-buttons {
+  display: flex;
+  gap: 4px;
+}
 .action-btn {
     width: 30px; height: 30px; border-radius: 8px;
     border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;

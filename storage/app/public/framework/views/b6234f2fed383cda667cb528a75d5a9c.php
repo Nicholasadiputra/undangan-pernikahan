@@ -3,8 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="csrf-token" content="{{ csrf_token() }}">
-    <title>{{ $landing->groom_name ?? 'Groom' }} & {{ $landing->bride_name ?? 'Bride' }} – Wedding</title>
+    <meta name="csrf-token" content="<?php echo e(csrf_token()); ?>">
+    <title><?php echo e($landing->groom_name ?? 'Groom'); ?> & <?php echo e($landing->bride_name ?? 'Bride'); ?> – Wedding</title>
 
     <link rel="icon" type="image/jpg" href="images/flavicon.jpg"/>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;700&family=Jost:wght@400&family=La+Belle+Aurore&display=swap" rel="stylesheet">
@@ -20,10 +20,10 @@
             theme: {
                 extend: {
                     colors: {
-                        'brown-dark': '#1E2A3A',
-                        'gold':       '#8FA3B1',
-                        'brown-mid':  '#4A6572',
-                        'cream':      '#F4F6F7',
+                        'brown-dark': '#321E04',
+                        'gold':       '#C9A96E',
+                        'brown-mid':  '#7A5C3A',
+                        'cream':      '#f5f1eb',
                     },
                     fontFamily: {
                         'cormorant':  ['"Cormorant Garamond"', 'serif'],
@@ -42,16 +42,16 @@
 
     <style>
       :root {
-        --c-primary: {{ $landing->color_primary ?? '#1E2A3A' }};
-        --c-accent:  {{ $landing->color_accent  ?? '#8FA3B1' }};
-        --c-mid:     {{ $landing->color_mid      ?? '#4A6572' }};
-        --c-bg:      {{ $landing->color_bg       ?? '#F4F6F7' }};
+        --c-primary: <?php echo e($landing->color_primary ?? '#321E04'); ?>;
+        --c-accent:  <?php echo e($landing->color_accent  ?? '#C9A96E'); ?>;
+        --c-mid:     <?php echo e($landing->color_mid      ?? '#7A5C3A'); ?>;
+        --c-bg:      <?php echo e($landing->color_bg       ?? '#f5f1eb'); ?>;
       }
     </style>
-    <link rel="stylesheet" href="{{ asset('css/utama.css') }}">
-    <script src="{{ asset('js/utama.js') }}" defer></script>
+    <link rel="stylesheet" href="<?php echo e(asset('css/utama.css')); ?>">
+    <script src="<?php echo e(asset('js/utama.js')); ?>" defer></script>
 
-    @php
+    <?php
         $weddingDateJs = $landing->wedding_date
             ? \Carbon\Carbon::parse($landing->wedding_date)->toIso8601String()
             : null;
@@ -59,57 +59,60 @@
         $gallery = json_decode($landing->gallery ?? '[]', true);
         $galleryBySlot = collect($gallery)->keyBy('slot');
         $kegiatan = json_decode($landing->kegiatan ?? '[]', true);
-    @endphp
+    ?>
 
     <script>
-        window.weddingDate = @json($weddingDateJs);
+        window.weddingDate = <?php echo json_encode($weddingDateJs, 15, 512) ?>;
     </script>
 </head>
-<body class="{{ $landing->show_animation ? 'with-animation' : '' }}">
+<body class="<?php echo e($landing->show_animation ? 'with-animation' : ''); ?>">
 
-    {{-- ════ HEADER ════ --}}
+    
     <header class="fixed top-0 left-1/2 -translate-x-1/2 w-full px-[70px] py-[10px] flex justify-between items-center z-[1000]"
         style="backdrop-filter: blur(12px); background: rgba(255,255,255,0.2); box-shadow: 0 8px 20px rgba(0,0,0,0.1);">
         <div class="font-['Grey_Qo'] text-[50px] font-extrabold text-[var(--c-primary)]"
             style="text-shadow: 2px 2px 5px rgba(0,0,0,0.2);">N</div>
         <nav class="flex gap-[70px]">
-            <a href="#home"     class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond'] tracking-widest">Home</a>
-            <a href="#mempelai" class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond'] tracking-widest">Mempelai</a>
-            <a href="#acara"    class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond'] tracking-widest">Acara</a>
-            <a href="#galeri"   class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond'] tracking-widest">Galeri</a>
+            <a href="#home"     class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond']">Home</a>
+            <a href="#mempelai" class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond']">Mempelai</a>
+            <a href="#acara"    class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond']">Acara</a>
+            <a href="#galeri"   class="no-underline text-[20px] text-[var(--c-primary)] font-['Cormorant_Garamond']">Galeri</a>
         </nav>
     </header>
 
-    {{-- ════ HERO ════ --}}
+    
     <section id="home" class="h-screen bg-center bg-cover bg-no-repeat flex justify-center items-center"
-        style="background-image: url('{{ isset($galleryBySlot['landing']) ? Storage::url($galleryBySlot['landing']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}');">
+        style="background-image: url('<?php echo e(isset($galleryBySlot['landing']) ? Storage::url($galleryBySlot['landing']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>');">
         <div class="absolute top-[30%] left-[30%] flex flex-col text-white tracking-[0.2em]">
             <h1 class="font-['La_Belle_Aurore'] text-[80px] font-bold text-white text-left"
                 style="text-shadow: 2px 2px 10px rgba(0,0,0,0.6);">
-                {{ $landing->groom_name ?? 'Groom' }}
+                <?php echo e($landing->groom_name ?? 'Groom'); ?>
+
             </h1>
             <div class="font-['Imperial_Script'] text-[90px] font-bold text-white text-right -mt-[10px]">&</div>
             <h1 class="font-['La_Belle_Aurore'] text-[80px] font-bold text-white text-right -mt-[10px] translate-x-1/2"
                 style="text-shadow: 2px 2px 10px rgba(0,0,0,0.6);">
-                {{ $landing->bride_name ?? 'Bride' }}
+                <?php echo e($landing->bride_name ?? 'Bride'); ?>
+
             </h1>
         </div>
         <p class="absolute font-jost font-semibold text-white text-[16px] tracking-[0.25em] mt-[600px]">
-            {{ $landing->wedding_date
+            <?php echo e($landing->wedding_date
                 ? \Carbon\Carbon::parse($landing->wedding_date)->format('d F Y')
-                : 'Tanggal Belum Ditentukan' }}
+                : 'Tanggal Belum Ditentukan'); ?>
+
         </p>
     </section>
 
-    {{-- ════ MEMPELAI ════ --}}
+    
     <section id="mempelai" class="font-jost flex items-center gap-[60px] px-[80px] pt-[80px] pb-[120px] bg-[var(--c-bg)]">
         <div class="relative w-[300px] h-[460px] flex-shrink-0">
 
-            <img src="{{ isset($galleryBySlot['story1']) ? Storage::url($galleryBySlot['story1']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+            <img src="<?php echo e(isset($galleryBySlot['story1']) ? Storage::url($galleryBySlot['story1']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                 class="absolute object-cover border-[3px] border-white w-[255px] h-[357px] top-0 left-0 z-[1]">
-            <img src="{{ isset($galleryBySlot['story2']) ? Storage::url($galleryBySlot['story2']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+            <img src="<?php echo e(isset($galleryBySlot['story2']) ? Storage::url($galleryBySlot['story2']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                 class="absolute object-cover border-[3px] border-white w-[206px] h-[257px] top-[150px] left-[180px] z-[2]">
-            <img src="{{ isset($galleryBySlot['ucapan1']) ? Storage::url($galleryBySlot['ucapan1']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+            <img src="<?php echo e(isset($galleryBySlot['ucapan1']) ? Storage::url($galleryBySlot['ucapan1']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                 class="absolute object-cover border-[3px] border-white w-[206px] h-[206px] top-[300px] left-[80px] z-[3]">
         </div>
         <div class="ml-[80px]">
@@ -122,14 +125,15 @@
             <p class="text-[15px] font-light tracking-[0.10em] text-[var(--c-primary)] mb-[30px]">
                 With love and joy, we invite you to celebrate this special moment with us.
             </p>
-            <hr class="border-none h-[1px] bg-[#8FA3B1] my-[20px]">
+            <hr class="border-none h-[1px] bg-[#C9A96E] my-[20px]">
             <p class="font-niconne text-[var(--c-primary)] text-[35px] tracking-[0.15em]">
-                {{ $landing->groom_name ?? 'Groom' }} & {{ $landing->bride_name ?? 'Bride' }}
+                <?php echo e($landing->groom_name ?? 'Groom'); ?> & <?php echo e($landing->bride_name ?? 'Bride'); ?>
+
             </p>
         </div>
     </section>
 
-    {{-- ════ SAVE THE DATE ════ --}}
+    
     <section id="acara" class="flex justify-between bg-[var(--c-primary)] items-stretch gap-[60px]">
         <div class="relative w-1/2 p-[80px] flex-shrink-0">
             <div class="absolute top-[150px] bottom-[150px] left-[80px] right-[80px] z-[3]">
@@ -142,21 +146,23 @@
                 <h2 class="font-gilda text-white text-[50px] tracking-[0.1em]">DATE</h2>
                 <div class="flex flex-col my-[20px]">
                     <span class="w-full h-[1px] mb-[10px]" style="background: linear-gradient(to right, var(--c-accent), var(--c-mid));"></span>
-                    @if($landing->wedding_date)
-                        @php
+                    <?php if($landing->wedding_date): ?>
+                        <?php
                             $date = \Carbon\Carbon::parse($landing->wedding_date);
                             $suffix = match((int)$date->format('j')) {
                                 1, 21, 31 => 'st', 2, 22 => 'nd', 3, 23 => 'rd', default => 'th'
                             };
-                        @endphp
+                        ?>
                         <div class="font-[Cormorant_Garamond] text-white text-[25px] inline-block">
-                            {{ $date->format('j') }}<span class="text-[15px] align-super">{{ $suffix }}</span>
-                            <span class="mx-[32px]">|</span>{{ $date->format('F') }}
-                            <span class="mx-[32px]">|</span>{{ $date->format('Y') }}
+                            <?php echo e($date->format('j')); ?><span class="text-[15px] align-super"><?php echo e($suffix); ?></span>
+                            <span class="mx-[32px]">|</span><?php echo e($date->format('F')); ?>
+
+                            <span class="mx-[32px]">|</span><?php echo e($date->format('Y')); ?>
+
                         </div>
-                    @else
+                    <?php else: ?>
                         <div class="font-[Cormorant_Garamond] text-white text-[25px]">Tanggal Belum Ditentukan</div>
-                    @endif
+                    <?php endif; ?>
                     <span class="w-full h-[1px] mt-[10px]" style="background: linear-gradient(to right, var(--c-accent), var(--c-mid));"></span>
                 </div>
                 <p class="font-jost font-light text-white text-[15px] tracking-[0.1em] mt-[20px]">
@@ -165,18 +171,18 @@
             </div>
         </div>
         <div class="w-1/2 flex-1 relative self-stretch overflow-hidden m-0 text-[0] leading-[0]">
-            <img src="{{ isset($galleryBySlot['save_the_date']) ? Storage::url($galleryBySlot['save_the_date']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+            <img src="<?php echo e(isset($galleryBySlot['save_the_date']) ? Storage::url($galleryBySlot['save_the_date']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                 alt="wedding" class="w-full h-full object-cover block"/>
             <div class="absolute left-[-60px] top-0 w-[120px] h-full"
                 style="background: linear-gradient(to right, #321E04, transparent);"></div>
         </div>
     </section>
 
-    {{-- ════ VENUE ════ --}}
+    
     <section class="bg-white px-[80px] py-[80px]">
         <div class="flex items-start gap-[48px] mb-[48px]">
             <div class="w-[250px] h-[326px] flex-shrink-0 overflow-hidden rounded-[4px]">
-                <img src="{{ isset($galleryBySlot['venue']) ? Storage::url($galleryBySlot['venue']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+                <img src="<?php echo e(isset($galleryBySlot['venue']) ? Storage::url($galleryBySlot['venue']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                     alt="Venue" class="w-full h-full object-cover block"/>
             </div>
             <div class="flex-1 flex flex-col justify-center pl-[20px]">
@@ -189,26 +195,28 @@
                 </p>
                 <p class="font-jost font-light text-black text-[15px] tracking-[0.15em] leading-[1.85] mb-[22px]">
                     Wedding Ceremony<br>
-                    {{ $landing->lokasi_wedding ?? 'Lokasi Belum Ditentukan' }}<br>
-                    {{ $landing->kota ?? '' }}
+                    <?php echo e($landing->lokasi_wedding ?? 'Lokasi Belum Ditentukan'); ?><br>
+                    <?php echo e($landing->kota ?? ''); ?>
+
                 </p>
                 <p class="font-niconne text-[var(--c-primary)] text-[30px] font-normal">Save Your Seat</p>
             </div>
         </div>
-        @if(!empty($landing->map_iframe))
+        <?php if(!empty($landing->map_iframe)): ?>
         <div class="w-[90%] mx-auto overflow-hidden rounded-[6px] mb-[20px] leading-[0] [&>iframe]:w-full [&>iframe]:h-[376px] [&>iframe]:block"
-            style="border: 5px solid #321E04;">
-            {!! $landing->map_iframe !!}
+            style="border: 5px solid var(--c-primary);">
+            <?php echo $landing->map_iframe; ?>
+
         </div>
-        <a href="https://maps.google.com/?q={{ urlencode(($landing->lokasi_wedding ?? '') . ' ' . ($landing->kota ?? '')) }}"
+        <a href="https://maps.google.com/?q=<?php echo e(urlencode(($landing->lokasi_wedding ?? '') . ' ' . ($landing->kota ?? ''))); ?>"
             target="_blank" rel="noopener noreferrer"
             class="block text-center font-jost font-semibold text-[var(--c-primary)] text-[15px] tracking-[0.15em] uppercase no-underline pt-[12px] pb-[4px] hover:underline underline-offset-4">
             Open on Google Maps
         </a>
-        @endif
+        <?php endif; ?>
     </section>
 
-    {{-- ════ COUNTDOWN ════ --}}
+    
     <section class="bg-[var(--c-primary)] px-[40px] pt-[60px] pb-[70px] text-center">
         <p class="font-niconne text-white text-[60px] font-normal tracking-[0.05em] mb-[40px] leading-none">
             Until our wedding day
@@ -236,7 +244,7 @@
         </div>
     </section>
 
-    {{-- ════ TIMELINE (dari kegiatan database) ════ --}}
+    
     <section class="w-full bg-[var(--c-bg)] overflow-hidden leading-none">
         <svg id="tl-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 600"
             width="100%" preserveAspectRatio="xMidYMid meet" class="block">
@@ -251,7 +259,7 @@
                 C 930,425 960,190  1000,220
                 C 1050,258 1060,460 1080,490"/>
 
-            @php
+            <?php
                 $tlPositions = [
                     ['x'=>180,'y'=>83,  'tx'=>220,'ty'=>70,  'anchor'=>'start'],
                     ['x'=>280,'y'=>288, 'tx'=>226,'ty'=>280, 'anchor'=>'end'],
@@ -263,96 +271,99 @@
                     ['x'=>1078,'y'=>495,'tx'=>1038,'ty'=>490,'anchor'=>'end'],
                 ];
                 $delays = [200,580,950,1280,1580,1880,2150,2420];
-            @endphp
+            ?>
 
-            @foreach($kegiatan as $i => $item)
-                @if($i >= 8) @break @endif
-                @php $pos = $tlPositions[$i]; @endphp
-                <g class="ev-group" data-delay="{{ $delays[$i] }}">
-                    <text class="ev-heart" x="{{ $pos['x'] }}" y="{{ $pos['y'] }}" text-anchor="middle">♥</text>
-                    <text class="ev-time"  id="ev-time-{{ $i }}"  x="{{ $pos['tx'] }}" y="{{ $pos['ty'] }}"  text-anchor="{{ $pos['anchor'] }}">
-                        {{ $item['time'] ?? '' }} {{ $item['period'] ?? '' }}
+            <?php $__currentLoopData = $kegiatan; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $i => $item): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
+                <?php if($i >= 8): ?> <?php break; ?> <?php endif; ?>
+                <?php $pos = $tlPositions[$i]; ?>
+                <g class="ev-group" data-delay="<?php echo e($delays[$i]); ?>">
+                    <text class="ev-heart" x="<?php echo e($pos['x']); ?>" y="<?php echo e($pos['y']); ?>" text-anchor="middle">♥</text>
+                    <text class="ev-time"  id="ev-time-<?php echo e($i); ?>"  x="<?php echo e($pos['tx']); ?>" y="<?php echo e($pos['ty']); ?>"  text-anchor="<?php echo e($pos['anchor']); ?>">
+                        <?php echo e($item['time'] ?? ''); ?> <?php echo e($item['period'] ?? ''); ?>
+
                     </text>
-                    <text class="ev-label" id="ev-label-{{ $i }}" x="{{ $pos['tx'] }}" y="{{ $pos['ty'] + 15 }}" text-anchor="{{ $pos['anchor'] }}">
-                        {{ $item['name'] ?? '' }}
+                    <text class="ev-label" id="ev-label-<?php echo e($i); ?>" x="<?php echo e($pos['tx']); ?>" y="<?php echo e($pos['ty'] + 15); ?>" text-anchor="<?php echo e($pos['anchor']); ?>">
+                        <?php echo e($item['name'] ?? ''); ?>
+
                     </text>
                 </g>
-            @endforeach
+            <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
 
-            @if(empty($kegiatan))
-                {{-- fallback hardcoded jika belum ada data --}}
+            <?php if(empty($kegiatan)): ?>
+                
                 <g class="ev-group" data-delay="200">
                     <text class="ev-heart" x="180" y="83" text-anchor="middle">♥</text>
                     <text class="ev-time"  x="220" y="70"  text-anchor="start">09:00 AM</text>
                     <text class="ev-label" x="220" y="85"  text-anchor="start">Guest Arrival</text>
                 </g>
-            @endif
+            <?php endif; ?>
 
             <text id="tl-title" class="tl-heading" x="60" y="500">Our Timeline</text>
         </svg>
     </section>
 
-    {{-- ════ DRESS CODE ════ --}}
+    
     <section class="relative w-full h-screen overflow-hidden"
         style="display:grid; grid-template-columns:320px 220px 1fr; grid-template-rows:50vh 50vh; gap:2px; background:#FFFFFF;">
 
         <div class="relative overflow-hidden" style="grid-column:1; grid-row:1/3;">
             <div class="absolute top-0 bottom-0 w-px z-10" style="left:40px; background:#FFFFFF;"></div>
             <div class="absolute inset-x-0 z-10" style="top:50%; height:2px; background:#FFFFFF;"></div>
-            <img src="{{ isset($galleryBySlot['dresscode1']) ? Storage::url($galleryBySlot['dresscode1']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+            <img src="<?php echo e(isset($galleryBySlot['dresscode1']) ? Storage::url($galleryBySlot['dresscode1']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                 class="w-full h-full object-cover"/>
         </div>
 
         <div class="overflow-hidden" style="grid-column:2; grid-row:1;">
-            <img src="{{ isset($galleryBySlot['dresscode2']) ? Storage::url($galleryBySlot['dresscode2']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+            <img src="<?php echo e(isset($galleryBySlot['dresscode2']) ? Storage::url($galleryBySlot['dresscode2']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                 class="w-full h-full object-cover"/>
         </div>
 
-        <div class="flex flex-col justify-start relative overflow-hidden bg-[#2C3E50]"
+        <div class="flex flex-col justify-start relative overflow-hidden bg-[#3B2710]"
             style="grid-column:3; grid-row:1; padding:5vh 3vw;">
-            <p class="font-jost font-semibold text-[#4A6572] text-[15px] tracking-[0.15em] uppercase">
+            <p class="font-jost font-semibold text-[#7A5C3A] text-[15px] tracking-[0.15em] uppercase">
                 Kindly Dress in Formal Attire
             </p>
             <span class="font-['Great_Vibes'] font-light text-[#F5ECD7] tracking-[0.05em] mt-4 block"
                 style="font-size: clamp(40px, 4.5vw, 80px);">Dress Code</span>
             <p class="font-jost font-light text-white tracking-[0.10em] leading-[1.7] mt-4 mb-7 w-full"
                 style="font-size: clamp(14px, 2.5vw, 20px);">
-                {{ $landing->dresscode_text ?? 'To create a harmonious and elegant celebration, we kindly invite our guests to wear formal attire in the following color palette.' }}
+                <?php echo e($landing->dresscode_text ?? 'To create a harmonious and elegant celebration, we kindly invite our guests to wear formal attire in the following color palette.'); ?>
+
             </p>
 
-            {{-- Palette dari database --}}
+            
             <div class="flex gap-3 justify-center">
-                @if(!empty($palette))
-                    @foreach($palette as $color)
+                <?php if(!empty($palette)): ?>
+                    <?php $__currentLoopData = $palette; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="w-[22px] h-[22px] rounded-[4px] p-[1.5px]"
                         style="background: linear-gradient(135deg, #F5D6AD, #8F7D65);">
-                        <div class="w-full h-full rounded-[3px]" style="background:{{ $color }};"></div>
+                        <div class="w-full h-full rounded-[3px]" style="background:<?php echo e($color); ?>;"></div>
                     </div>
-                    @endforeach
-                @else
-                    {{-- fallback default palette --}}
-                    @foreach(['#FFFFFF','#2C3E50','#4A6572','#7F8C8D','#BDC3C7'] as $color)
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php else: ?>
+                    
+                    <?php $__currentLoopData = ['#FFFFFF','#563E32','#5C5C38','#36161B','#151A20']; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $color): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div class="w-[22px] h-[22px] rounded-[4px] p-[1.5px]"
                         style="background: linear-gradient(135deg, #F5D6AD, #8F7D65);">
-                        <div class="w-full h-full rounded-[3px]" style="background:{{ $color }};"></div>
+                        <div class="w-full h-full rounded-[3px]" style="background:<?php echo e($color); ?>;"></div>
                     </div>
-                    @endforeach
-                @endif
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
             </div>
         </div>
 
         <div class="overflow-hidden" style="grid-column:2; grid-row:2;">
-            <img src="{{ isset($galleryBySlot['dresscode3']) ? Storage::url($galleryBySlot['dresscode3']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+            <img src="<?php echo e(isset($galleryBySlot['dresscode3']) ? Storage::url($galleryBySlot['dresscode3']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                 class="w-full h-full object-cover"/>
         </div>
         <div class="overflow-hidden" style="grid-column:3; grid-row:2;">
-            <img src="{{ isset($galleryBySlot['dresscode4']) ? Storage::url($galleryBySlot['dresscode4']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+            <img src="<?php echo e(isset($galleryBySlot['dresscode4']) ? Storage::url($galleryBySlot['dresscode4']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                 class="w-full h-full object-cover object-top"/>
         </div>
     </section>
 
-    {{-- ════ STORY OF US ════ --}}
-    <section class="bg-[#F0F2F5] min-h-screen">
+    
+    <section class="bg-[#f5f3ee] min-h-screen">
         <div class="flex flex-row items-start gap-16 max-w-[860px] w-full mx-auto px-[60px] py-[80px]">
             <div class="flex flex-col flex-1">
                 <h1 class="font-gilda font-normal text-[var(--c-primary)] text-[50px] tracking-10 mb-[30px] leading-tight">
@@ -363,7 +374,8 @@
                         HOW WE MET
                     </h2>
                     <p class="font-jost font-light text-[var(--c-primary)] text-[15px] tracking-10 leading-relaxed text-center">
-                        {{ $landing->cerita_bertemu ?? 'Our story began in the most unexpected way — through a simple introduction during our university days.' }}
+                        <?php echo e($landing->cerita_bertemu ?? 'Our story began in the most unexpected way — through a simple introduction during our university days.'); ?>
+
                     </p>
                 </div>
                 <div>
@@ -371,89 +383,92 @@
                         HOW WE PROPOSAL
                     </h2>
                     <p class="font-jost font-light text-[var(--c-primary)] text-[15px] tracking-10 leading-relaxed text-center">
-                        {{ $landing->cerita_melamar ?? 'As time passed, it became clear that our journey together was meant to last a lifetime.' }}
+                        <?php echo e($landing->cerita_melamar ?? 'As time passed, it became clear that our journey together was meant to last a lifetime.'); ?>
+
                     </p>
                 </div>
             </div>
             <div class="flex flex-col flex-shrink-0 gap-[30px]">
                 <div class="w-[275px] h-[275px] overflow-hidden">
-                    <img src="{{ isset($galleryBySlot['story1']) ? Storage::url($galleryBySlot['story1']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+                    <img src="<?php echo e(isset($galleryBySlot['story1']) ? Storage::url($galleryBySlot['story1']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                         alt="Story 1" class="object-cover w-full h-full"/>
                 </div>
                 <div class="w-[275px] h-[275px] overflow-hidden">
-                    <img src="{{ isset($galleryBySlot['story2']) ? Storage::url($galleryBySlot['story2']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+                    <img src="<?php echo e(isset($galleryBySlot['story2']) ? Storage::url($galleryBySlot['story2']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                         alt="Story 2" class="object-cover w-full h-full"/>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- ════ GALERI ════ --}}
+    
     <section id="galeri" class="bg-[var(--c-primary)] flex flex-col items-center px-[60px] py-[60px]">
         <h1 class="font-niconne text-white text-[60px] font-normal tracking-5 mb-[50px]">Gallery</h1>
         <div class="flex flex-row items-end justify-center gap-[30px] w-full max-w-[900px]">
 
-            {{-- Orang tua mempelai pria --}}
+            
             <div class="flex flex-col items-center gap-0">
                 <div class="flex flex-row gap-[20px] mb-[24px]">
                     <div class="arch-wrapper">
-                        <img src="{{ isset($galleryBySlot['ayah_pria']) ? Storage::url($galleryBySlot['ayah_pria']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" alt="Ayah Mempelai Pria"/>
+                        <img src="<?php echo e(isset($galleryBySlot['ayah_pria']) ? Storage::url($galleryBySlot['ayah_pria']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>" alt="Ayah Mempelai Pria"/>
                     </div>
                     <div class="arch-wrapper">
-                        <img src="{{ isset($galleryBySlot['ibu_pria']) ? Storage::url($galleryBySlot['ibu_pria']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" alt="Ibu Mempelai Pria"/>
+                        <img src="<?php echo e(isset($galleryBySlot['ibu_pria']) ? Storage::url($galleryBySlot['ibu_pria']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>" alt="Ibu Mempelai Pria"/>
                     </div>
                 </div>
                 <div class="text-center">
                     <p class="font-jost font-normal text-white text-[24px] tracking-10">
-                        {{ $landing->ayah_pria ? 'Bpk. ' . $landing->ayah_pria : 'Mr. &amp; Mrs. —' }}
-                        @if($landing->ibu_pria) & Ibu {{ $landing->ibu_pria }} @endif
+                        <?php echo e($landing->ayah_pria ? 'Bpk. ' . $landing->ayah_pria : 'Mr. &amp; Mrs. —'); ?>
+
+                        <?php if($landing->ibu_pria): ?> & Ibu <?php echo e($landing->ibu_pria); ?> <?php endif; ?>
                     </p>
-                    <p class="font-jost font-normal text-[var(--c-accent)] text-[18px] tracking-15 uppercase mt-[4px]">Parents of the Groom</p>
+                    <p class="font-jost font-normal text-[#E0A96A] text-[18px] tracking-15 uppercase mt-[4px]">Parents of the Groom</p>
                 </div>
             </div>
 
-            {{-- Orang tua mempelai wanita --}}
+            
             <div class="flex flex-col items-center gap-0">
                 <div class="flex flex-row gap-[20px] mb-[24px]">
                     <div class="arch-wrapper">
-                        <img src="{{ isset($galleryBySlot['ayah_wanita']) ? Storage::url($galleryBySlot['ayah_wanita']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" alt="Ayah Mempelai Wanita"/>
+                        <img src="<?php echo e(isset($galleryBySlot['ayah_wanita']) ? Storage::url($galleryBySlot['ayah_wanita']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>" alt="Ayah Mempelai Wanita"/>
                     </div>
                     <div class="arch-wrapper">
-                        <img src="{{ isset($galleryBySlot['ibu_wanita']) ? Storage::url($galleryBySlot['ibu_wanita']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}" alt="Ibu Mempelai Wanita"/>
+                        <img src="<?php echo e(isset($galleryBySlot['ibu_wanita']) ? Storage::url($galleryBySlot['ibu_wanita']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>" alt="Ibu Mempelai Wanita"/>
                     </div>
                 </div>
                 <div class="text-center">
                     <p class="font-jost font-normal text-white text-[24px] tracking-10">
-                        {{ $landing->ayah_wanita ? 'Bpk. ' . $landing->ayah_wanita : 'Mr. &amp; Mrs. —' }}
-                        @if($landing->ibu_wanita) & Ibu {{ $landing->ibu_wanita }} @endif
+                        <?php echo e($landing->ayah_wanita ? 'Bpk. ' . $landing->ayah_wanita : 'Mr. &amp; Mrs. —'); ?>
+
+                        <?php if($landing->ibu_wanita): ?> & Ibu <?php echo e($landing->ibu_wanita); ?> <?php endif; ?>
                     </p>
-                    <p class="font-jost font-normal text-[var(--c-accent)] text-[18px] tracking-15 uppercase mt-[4px]">Parents of the Bride</p>
+                    <p class="font-jost font-normal text-[#E0A96A] text-[18px] tracking-15 uppercase mt-[4px]">Parents of the Bride</p>
                 </div>
             </div>
         </div>
     </section>
 
-    {{-- ════ SCROLL GALLERY ════ --}}
+    
     <div class="relative w-full" style="background:var(--c-primary);">
         <div class="absolute z-10"
             style="width:100%; height:18%; background:var(--c-primary); border-radius:0 0 50% 50%; top:0;"></div>
         <div class="relative z-0 w-full overflow-x-auto overflow-y-hidden py-8 px-6">
             <div class="flex gap-4" style="width: max-content;">
-                @php $galeriItems = collect($gallery)->where('slot', 'galeri')->values(); @endphp
-                @if($galeriItems->count())
-                    @foreach($galeriItems as $img)
+                <?php $galeriItems = collect($gallery)->where('slot', 'galeri')->values(); ?>
+                <?php if($galeriItems->count()): ?>
+                    <?php $__currentLoopData = $galeriItems; $__env->addLoop($__currentLoopData); foreach($__currentLoopData as $img): $__env->incrementLoopIndices(); $loop = $__env->getLastLoop(); ?>
                     <div style="width:220px; height:320px; flex-shrink:0; overflow:hidden;">
-                        <img src="{{ Storage::url($img['path']) }}" class="w-full h-full object-cover"/>
+                        <img src="<?php echo e(Storage::url($img['path'])); ?>" class="w-full h-full object-cover"/>
                     </div>
-                    @endforeach
-                @endif
+                    <?php endforeach; $__env->popLoop(); $loop = $__env->getLastLoop(); ?>
+                <?php endif; ?>
             </div>
         </div>
         <div class="absolute z-10"
             style="width:100%; height:18%; background:var(--c-primary); border-radius:50% 50% 0 0; bottom:0;"></div>
     </div>
 
-    {{-- ════ RSVP ════ --}}
+    
     <section class="bg-[#F8F8F8] flex flex-col items-center px-[60px] py-[60px]">
         <p class="font-jost font-semibold text-[var(--c-primary)] text-[20px] tracking-[0.15em] uppercase mb-3">
             Confirmation of Attendance
@@ -462,15 +477,15 @@
             Will you join us?
         </h1>
         <form id="rsvp-form" class="w-full max-w-[640px] flex flex-col gap-6">
-            <input type="hidden" name="guest_id" id="guest-id" value="{{ $guest->id ?? '' }}" />
+            <input type="hidden" name="guest_id" id="guest-id" value="<?php echo e($guest->id ?? ''); ?>" />
             <div class="flex flex-col gap-2">
                 <label class="font-jost font-semibold text-[var(--c-primary)] text-[18px] tracking-[0.25em] uppercase">Your Name</label>
                 <div style="background: linear-gradient(135deg, #8F7D65, #635336); padding: 1px; border-radius: 10px;">
                     <input type="text" name="name" placeholder="Enter your name" required
                         class="w-full px-5 py-4 text-[var(--c-primary)] placeholder-[#9e8e7a] outline-none"
                         style="font-family:'Roboto',sans-serif;background:#ffffff;border-radius:9px;border:none;width:100%;letter-spacing:0.1em;"
-                        value="{{ $guest->nama ?? '' }}"
-                        @if(isset($guest) && $guest->nama) readonly @endif>
+                        value="<?php echo e($guest->nama ?? ''); ?>"
+                        <?php if(isset($guest) && $guest->nama): ?> readonly <?php endif; ?>>
                 </div>
             </div>
             <div class="flex flex-col gap-2">
@@ -521,20 +536,20 @@
         </form>
     </section>
 
-    {{-- ════ THANK YOU ════ --}}
+    
     <section class="bg-[#F8F8F8] flex items-center justify-center py-16 px-10">
         <div class="flex items-end justify-center gap-0" style="max-width:1200px;width:100%;">
             <div class="relative flex-shrink-0" style="width:520px;">
-                <img src="{{ isset($galleryBySlot['penutup']) ? Storage::url($galleryBySlot['penutup']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7' }}"
+                <img src="<?php echo e(isset($galleryBySlot['penutup']) ? Storage::url($galleryBySlot['penutup']['path']) : 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7'); ?>"
                     alt="Couple" class="w-full h-full object-cover block"
                     style="box-shadow: 25px 25px 0px 0px var(--c-primary);">
             </div>
             <div class="flex flex-col justify-center px-14"
-                style="background:#CFD8DC;gap:30px;height:450px;flex:1;">
+                style="background:#D9CFC7;gap:30px;height:450px;flex:1;">
                 <div class="flex items-center gap-4">
                     <p class="font-jost font-semibold uppercase text-[var(--c-primary)]"
                         style="font-size:15px;letter-spacing:0.25em;white-space:nowrap;">Thank You</p>
-                    <div style="width:80px;height:1px;background:#8FA3B1;flex-shrink:0;"></div>
+                    <div style="width:80px;height:1px;background:#C9A96E;flex-shrink:0;"></div>
                 </div>
                 <h2 class="font-gilda font-normal uppercase text-[var(--c-primary)]" style="font-size:36px;line-height:1.2;">
                     Thank you for being part of our special day.
@@ -546,7 +561,7 @@
         </div>
     </section>
 
-    {{-- ════ FOOTER ════ --}}
+    
     <footer class="w-full px-16 py-10" style="background:var(--c-primary);">
         <div class="flex items-center justify-between">
             <div class="flex items-center gap-6">
@@ -557,7 +572,7 @@
                         A joyful celebration of love and togetherness
                     </p>
                     <p class="font-jost font-normal text-white" style="font-size:18px;letter-spacing:0.1em;">
-                        © {{ date('Y') }} Wedding Invitation
+                        © <?php echo e(date('Y')); ?> Wedding Invitation
                     </p>
                     <p class="font-jost font-normal text-white" style="font-size:18px;letter-spacing:0.1em;">Made for love</p>
                 </div>
@@ -575,13 +590,13 @@
         </div>
     </footer>
 
-    {{-- Musik --}}
+    
     <button id="musicToggle" class="music-btn">
         <i id="musicIcon" class="fas fa-play"></i>
     </button>
-    <audio id="bgMusic" loop {{ $landing->play_music ? 'autoplay' : '' }}>
+    <audio id="bgMusic" loop <?php echo e($landing->play_music ? 'autoplay' : ''); ?>>
         <source src="music/wedding-music1.mp3" type="audio/mpeg">
     </audio>
 
 </body>
-</html>
+</html><?php /**PATH C:\laragon\www\undangan\resources\views/undangan/bohemian.blade.php ENDPATH**/ ?>

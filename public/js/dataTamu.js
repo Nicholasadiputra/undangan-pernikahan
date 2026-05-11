@@ -57,17 +57,20 @@ document.addEventListener('DOMContentLoaded', () => {
         <td>${statusBadge(t.status)}</td>
         <td class="ucapan-text">${t.ucapan ? `"${t.ucapan.length > 22 ? t.ucapan.slice(0,22)+'…' : t.ucapan}"` : '—'}</td>
         <td>
-          <div class="actions">
-            <button class="action-btn action-edit"  onclick="editTamu(${t.id})"   title="Edit">
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
-              </svg>
-            </button>
-            <button class="action-btn action-delete" onclick="deleteTamu(${t.id})" title="Hapus">
-              <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
-                <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/>
-              </svg>
-            </button>
+          <div class="link-actions">
+            <button class="btn-link" type="button" onclick="copyLink('${t.slug}')">Get Link</button>
+            <div class="action-buttons">
+              <button class="action-btn action-edit" onclick="editTamu(${t.id})" title="Edit">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4L16.5 3.5z"/>
+                </svg>
+              </button>
+              <button class="action-btn action-delete" onclick="deleteTamu(${t.id})" title="Hapus">
+                <svg width="13" height="13" fill="none" stroke="currentColor" stroke-width="2.5" viewBox="0 0 24 24">
+                  <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6M10 11v6M14 11v6M9 6V4h6v2"/>
+                </svg>
+              </button>
+            </div>
           </div>
         </td>
       </tr>
@@ -219,6 +222,58 @@ document.addEventListener('DOMContentLoaded', () => {
       });
       a.click();
     } catch (e) { console.error(e); }
+  };
+
+  window.copyLink = function(slug) {
+    const url = `${window.location.origin}/${slug}`;
+    if (!navigator.clipboard) {
+      const textarea = document.createElement('textarea');
+      textarea.value = url;
+      document.body.appendChild(textarea);
+      textarea.select();
+      document.execCommand('copy');
+      document.body.removeChild(textarea);
+      alert('Link berhasil disalin!');
+      return;
+    }
+
+    navigator.clipboard.writeText(url)
+      .then(() => alert('Link berhasil disalin!'))
+      .catch(() => alert('Gagal menyalin link.'));
+  };
+
+  window.handleImportFile = function(event) {
+    const file = event.target.files?.[0];
+    if (!file) {
+      return;
+    }
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const csrfToken = document.querySelector('meta[name="csrf-token"]')?.getAttribute('content') ?? '';
+
+    fetch('/dashboard/data-tamu/import', {
+      method: 'POST',
+      headers: { 'X-CSRF-TOKEN': csrfToken },
+      body: formData,
+      credentials: 'same-origin'
+    })
+    .then(async res => {
+      const json = await res.json();
+      if (res.ok) {
+        alert(`Import selesai. Berhasil: ${json.success}, Dilewati: ${json.skipped}, Gagal: ${json.failed}`);
+        loadTamu();
+      } else {
+        throw new Error(json.message || 'Gagal mengimpor.');
+      }
+    })
+    .catch(error => {
+      console.error(error);
+      alert('Gagal mengimpor file Excel. Pastikan format .xls/.xlsx dan kolom Nama Tamu tersedia.');
+    })
+    .finally(() => {
+      event.target.value = '';
+    });
   };
 
   const sidebar   = document.getElementById('sidebar');

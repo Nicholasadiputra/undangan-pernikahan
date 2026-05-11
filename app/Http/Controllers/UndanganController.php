@@ -14,9 +14,23 @@ class UndanganController extends Controller
         return view('undangan.index', compact('landing'));
     }
 
+    public function show($slug)
+    {
+        $landing = Landing::first() ?? new Landing();
+        $guest = Tamu::where('slug', $slug)->first();
+
+        return view('undangan.index', compact('landing', 'guest'));
+    }
+
     public function utama()
     {
         $landing = Landing::first() ?? new Landing();
+        $guest = null;
+        $guestSlug = session('guest_slug');
+
+        if ($guestSlug) {
+            $guest = Tamu::where('slug', $guestSlug)->first();
+        }
 
         // Pilih view berdasarkan template yang disimpan di database
         $template = $landing->template ?? 'bohemian';
@@ -24,27 +38,46 @@ class UndanganController extends Controller
             ? 'undangan.' . $template
             : 'undangan.bohemian';
 
-        return view($view, compact('landing'));
+        return view($view, compact('landing', 'guest'));
     }
 
     public function rsvp(Request $request)
     {
         try {
-            // Validasi data masuk
             $request->validate([
-                'nama'      => 'required|string|max:255',
                 'kehadiran' => 'required|in:Hadir,Tidak Hadir',
                 'kategori'  => 'required|in:Keluarga,Teman,Rekan',
                 'pax'       => 'required|integer|min:0',
             ]);
 
-            // Simpan ke database sesuai struktur tabel tamu
+            if ($request->filled('guest_id')) {
+                $tamu = Tamu::find($request->input('guest_id'));
+                if ($tamu) {
+                    $tamu->update([
+                        'kategori' => $request->kategori,
+                        'pax'      => $request->pax,
+                        'status'   => $request->kehadiran,
+                        'ucapan'   => $request->pesan,
+                    ]);
+
+                    return response()->json([
+                        'status'  => 'success',
+                        'message' => 'Terima kasih, konfirmasi Anda telah diperbarui.'
+                    ]);
+                }
+            }
+
+            $request->validate([
+                'nama' => 'required|string|max:255',
+            ]);
+
             Tamu::create([
                 'nama'     => $request->nama,
                 'kategori' => $request->kategori,
                 'pax'      => $request->pax,
                 'status'   => $request->kehadiran,
                 'ucapan'   => $request->pesan,
+                'slug'     => Tamu::makeUniqueSlug($request->nama),
             ]);
 
             return response()->json([

@@ -462,12 +462,15 @@
             Will you join us?
         </h1>
         <form id="rsvp-form" class="w-full max-w-[640px] flex flex-col gap-6">
+            <input type="hidden" name="guest_id" id="guest-id" value="{{ $guest->id ?? '' }}" />
             <div class="flex flex-col gap-2">
                 <label class="font-jost font-semibold text-[var(--c-primary)] text-[18px] tracking-[0.25em] uppercase">Your Name</label>
                 <div style="background: linear-gradient(135deg, #8F7D65, #635336); padding: 1px; border-radius: 10px;">
                     <input type="text" name="name" placeholder="Enter your name" required
                         class="w-full px-5 py-4 text-[var(--c-primary)] placeholder-[#9e8e7a] outline-none"
-                        style="font-family:'Roboto',sans-serif;background:#ffffff;border-radius:9px;border:none;width:100%;letter-spacing:0.1em;">
+                        style="font-family:'Roboto',sans-serif;background:#ffffff;border-radius:9px;border:none;width:100%;letter-spacing:0.1em;"
+                        value="{{ $guest->nama ?? '' }}"
+                        @if(isset($guest) && $guest->nama) readonly @endif>
                 </div>
             </div>
             <div class="flex flex-col gap-2">
